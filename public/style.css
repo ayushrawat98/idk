@@ -1,0 +1,35 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.navlinks {
+	margin: 12px 0px;
+	ul {
+		list-style: none;
+		/* remove bullets */
+		padding: 0;
+		margin: 0;
+	}
+
+	li {
+		display: inline-block;
+		/* put them in one line */
+		margin-right: 10px;
+		/* optional spacing */
+	}
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
+}
+
+.indexImages{
+	margin: 12px 0px;
+}
+
+.indexStats{
+	margin: 12px 0px;
+}

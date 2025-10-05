@@ -1,0 +1,37 @@
+{% import "macro.html" as macros %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>{{ title }}</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<h1>{{ title }}</h1>
+	<p>Fast, anonymous, ephemeral, minimally censored, and meme-friendly.</p>
+
+	{{ macros.navBar(boards) }}
+	
+	<section class="indexImages">
+		<h3>Recent images</h3>
+		{% for image in images %}
+		<img src="{{image}}" alt="pyaari" height="100" width="100"/>
+		{% else %}
+		<p>No images :&lt;</p>
+		{% endfor %}
+	</section>
+
+	<section class="indexStats">
+		<h3>Statistics</h3>
+		<p>
+			Total posts : 123
+			<br/>
+			Post per hour : 456
+		</p>
+	</section>
+
+</body>
+
+</html>

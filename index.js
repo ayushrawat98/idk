@@ -20,7 +20,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get('/', async (req, res, next) => {
-	res.render('index.html', {boards : ['b', 'g', 'fit', 'fa'], title : 'Anonymouse', images : ['/images/sugawara1.png', '/images/sugawara2.png'] });
+	res.render('index.html', {boards : ['b', 'g', 'fit', 'fa'], title : 'IndiaChan', images : ['/images/sugawara1.png', '/images/sugawara2.png'] });
 })
 app.use('/board', boardRoute)
 app.use('/thread', threadRoute)

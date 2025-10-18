@@ -2,6 +2,11 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+main{
+	padding: 12px;
 }
 
 .navlinks {
@@ -20,10 +25,10 @@
 		/* optional spacing */
 	}
 
-	a {
+	/* a {
 		text-decoration: none;
 		color: inherit;
-	}
+	} */
 }
 
 .indexImages{
@@ -32,4 +37,18 @@
 
 .indexStats{
 	margin: 12px 0px;
+}
+
+.postList{
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.post{
+	/* border: 1px solid black;
+	border-radius: 8px; */
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	padding: 12px;
 }

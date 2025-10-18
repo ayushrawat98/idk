@@ -1,0 +1,24 @@
+	<!-- <p>त्वरित, गुप्त, क्षणभंगुर, न्यूनतम-नियन्त्रित, तथा विनोदमूलक (मीम-मैत्री)।</p> -->
+	<p>शीघ्र, गुप्त, अल्पकालिक, सीमित-नियन्त्रित तथा हास्यमय।</p>
+
+	<!-- {{ macros.navBar(boards) }} -->
+
+	<a>Lets start</a>
+
+	<section class="indexImages">
+		<h3>नवीन चित्र</h3>
+		{% for image in images %}
+		<img src="{{image}}" alt="pyaari" height="100" width="100" />
+		{% else %}
+		<p>No images :&lt;</p>
+		{% endfor %}
+	</section>
+
+	<section class="indexStats">
+		<h3>सांख्यिक विवरण</h3>
+		<p>
+			कुल लेख : १२३
+			<br />
+			प्रति घण्टा लेख : ४५६
+		</p>
+	</section>

@@ -1,1 +1,51 @@
-<h1>Welcome to {{board}}</h1>
+{% extends "skeleton.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}
+	/{{board}}/
+{% endblock %}
+
+{% block main %}
+
+	<h1>/{{board}}/</h1>
+	<p>Board description</p>
+	<button class="newPostButton">Create new post</button>
+
+	<div class="newPostWindow" hidden="true" style="height: 100px; width: 100px; background-color: rosybrown; z-index: 2;cursor: move; -webkit-user-drag: element; position: absolute">
+		nice
+	</div>
+
+	{{ macros.postList(datalist, board) }}
+
+{% endblock %}
+
+{% block script %}
+	<script>
+		let newPostButton = document.querySelector('.newPostButton')
+		let newPostWindow = document.querySelector('.newPostWindow')
+		newPostButton.addEventListener('click', () => {
+			newPostWindow.toggleAttribute('hidden')
+		})
+		let offsetX = 0, offsetY = 0, isDragging = false;
+
+		newPostWindow.addEventListener('mousedown', (e) => {
+			isDragging = true;
+			// Record where you clicked
+			offsetX = e.clientX - newPostWindow.offsetLeft;
+			offsetY = e.clientY - newPostWindow.offsetTop;
+			newPostWindow.style.cursor = 'grabbing';
+		});
+
+		document.addEventListener('mousemove', (e) => {
+			if (!isDragging) return;
+			// Move the element
+			newPostWindow.style.left = e.clientX - offsetX + 'px';
+			newPostWindow.style.top = e.clientY - offsetY + 'px';
+		});
+
+		document.addEventListener('mouseup', () => {
+			isDragging = false;
+			newPostWindow.style.cursor = 'move';
+		});
+	</script>
+{% endblock %}

@@ -1,14 +1,11 @@
-{% import "macro.html" as macros %}
+{% extends "skeleton.html" %}
+{% import "macros.html" as macros %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}
+	{{title}}
+{% endblock %}
 
-<head>
-	<title>{{ title }}</title>
-	<link rel="stylesheet" href="style.css">
-</head>
-
-<body>
+{% block main %}
 	<h1>{{ title }}</h1>
 	<p>Fast, anonymous, ephemeral, minimally censored, and meme-friendly.</p>
 
@@ -31,7 +28,4 @@
 			Post per hour : 456
 		</p>
 	</section>
-
-</body>
-
-</html>
+{% endblock %}

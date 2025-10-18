@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>
+			{% block title %}
+			IndiaChan.Gay
+			{% endblock %}
+		</title>
+		<base href="/">
+		<meta charset="UTF-8">
+		<meta name="description" content="IndiaChan - Fast, anonymous, ephemeral, minimally censored, and meme-friendly.">
+		<meta name="keywords" content="IndiaChan, BharatChan, chan, india, indian, bharat">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="style.css">
+	</head>
+
+	<body>
+		
+		<main>
+
+			{% block main %}
+				Content goes here.
+			{% endblock %}
+
+			{% if not index %}
+			<nav class="navlinks">
+				<ul>
+					<li><a href="">main</a></li>
+					{% for board in boards %}
+					<li><a href="/board/{{board}}">/{{board}}/</a></li>
+					{% else %}
+					<p>No boards available :&lt;</p>
+					{% endfor %}
+				</ul>
+			</nav>
+			{% endif %}
+
+		</main>
+
+		{% block script %}
+			
+		{% endblock %}
+
+	</body>
+
+</html>

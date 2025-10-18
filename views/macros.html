@@ -1,0 +1,41 @@
+{% macro navBar(boards) %}
+<nav class="navlinks">
+	<ul>
+		{% for board in boards %}
+		<li><a href="/board/{{board}}">/{{board}}/</a></li>
+		{% else %}
+		<p>No boards available :&lt;</p>
+		{% endfor %}
+	</ul>
+</nav>
+{% endmacro %}
+
+{% macro postList(datalist, board) %}
+	<section class="postList">
+		{% for data in datalist %}
+			{{ post(data, board) }}
+		{% endfor %}
+	</section>
+{% endmacro %}
+
+{% macro post(data, board) %}
+
+	<article class="post">
+		<header>
+			<span>{{data.name}}</span>
+			<span>{{data.date.toLocaleString()}}</span>
+			<span>#{{data.postNumber}}</span>
+		</header>
+		<p>{{data.content}}</p>
+		<footer>
+			{% if board %}
+				<span>2 Replies</span>
+				<a href="board/{{board}}/thread/{{data.postNumber}}">View</a>
+			{% else %}
+				<button id="replyButton" data-post-number="{{data.postNumber}}">Reply</button>
+			{% endif %}
+		</footer>
+	</article>
+
+{% endmacro %}
+

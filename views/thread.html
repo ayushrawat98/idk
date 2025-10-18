@@ -1,0 +1,21 @@
+{% extends "skeleton.html" %}
+{% import "macros.html" as macros %}
+
+{% block title %}
+	1234 - Replace it with title or some description
+{% endblock %}
+
+{% block main %}
+	{{ macros.postList(datalist) }}
+{% endblock %}
+
+{% block script %}
+	<script>
+		const replyButton = document.querySelectorAll("button")
+		replyButton.forEach(btn => {
+				btn.addEventListener('click', () => {
+					alert(btn.dataset.postNumber)
+				})
+			})
+	</script>
+{% endblock %}

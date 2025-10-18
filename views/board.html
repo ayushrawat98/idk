@@ -11,8 +11,22 @@
 	<p>Board description</p>
 	<button class="newPostButton">Create new post</button>
 
-	<div class="newPostWindow" hidden="true" style="height: 100px; width: 100px; background-color: rosybrown; z-index: 2;cursor: move; -webkit-user-drag: element; position: absolute">
-		nice
+	<div class="newPostWindow" hidden="true">
+		<form>
+			<label for="name">Name :</label>
+			<br>
+			<input type="text" id="name" placeholder="Anonymous" required/>
+			<br>
+			<label for="title">Title :</label>
+			<br>
+			<input type="text" id="title" placeholder="Title" required/>
+			<br>
+			<label for="content">Content :</label>
+			<br>
+			<textarea rows="5" cols="35" placeholder="Whats in your mind..." id="content" required></textarea>
+			<br>
+			<button type="submit">Submit</button>
+		</form>
 	</div>
 
 	{{ macros.postList(datalist, board) }}

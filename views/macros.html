@@ -22,11 +22,12 @@
 
 	<article class="post">
 		<header>
-			<span>{{data.name}}</span>
-			<span>{{data.date.toLocaleString()}}</span>
-			<span>#{{data.postNumber}}</span>
+			<h3>Some fooking tile for it</h3>
 		</header>
-		<p>{{data.content}}</p>
+		<p>
+			<img src="/images/sugawara1.png" height="100" width="100"/>
+			{{data.content}}
+		</p>
 		<footer>
 			{% if board %}
 				<span>2 Replies</span>
@@ -34,6 +35,11 @@
 			{% else %}
 				<button id="replyButton" data-post-number="{{data.postNumber}}">Reply</button>
 			{% endif %}
+			<br>
+			<span>~{{data.name}}</span>
+			<span>{{data.date.toLocaleString()}}</span>
+			<span>#{{data.postNumber}}</span>
+			
 		</footer>
 	</article>
 

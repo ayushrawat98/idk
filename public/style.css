@@ -5,12 +5,13 @@
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
-main{
+main {
 	padding: 12px;
 }
 
 .navlinks {
 	margin: 12px 0px;
+
 	ul {
 		list-style: none;
 		/* remove bullets */
@@ -31,24 +32,45 @@ main{
 	} */
 }
 
-.indexImages{
+.indexImages {
 	margin: 12px 0px;
 }
 
-.indexStats{
+.indexStats {
 	margin: 12px 0px;
 }
 
-.postList{
+.postList {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
 }
 
-.post{
+.post {
 	/* border: 1px solid black;
 	border-radius: 8px; */
 	border-top: 1px solid black;
 	border-bottom: 1px solid black;
 	padding: 12px;
+
+	img {
+		float: left;
+	}
+
+	p::after {
+		content: "";
+		clear: both;
+		display: table;
+	}
+}
+
+
+.newPostWindow {
+	background-color: whitesmoke;
+	padding: 12px;
+	border: 1px solid black;
+	z-index: 2;
+	position: absolute;
+	top: 25px;
+	left: 100px;
 }

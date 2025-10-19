@@ -34,7 +34,7 @@ class DB {
 					username TEXT,
 					title TEXT,
 					content TEXT,
-					file_id INTEGER REFERENCES files(id) on delete cascade,
+					file_id INTEGER REFERENCES files(id),
 					created_at TEXT,
 					updated_at text
 				);

@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block main %}
+<div class="textCenter">
 	<h1>{{ title }}</h1>
 	<p>Fast, anonymous, ephemeral, minimally censored, and meme-friendly.</p>
 
@@ -14,20 +15,21 @@
 	<section class="indexImages">
 		<h3>Recent images</h3>
 		{% for image in images %}
-		<img src="{{image.path}}" alt="pyaari" height="100" width="100"/>
+		<img src="files/{{image.path}}" alt="pyaari" height="100" width="100"/>
 		{% else %}
 		<p>No images :&lt;</p>
 		{% endfor %}
 	</section>
 
-	<section class="indexStats">
+	<!-- <section class="indexStats">
 		<h3>Statistics</h3>
 		<p>
 			Total posts : Apni maa se puch
 			<br/>
 			Post per hour : Apni maa se puch
 		</p>
-	</section>
+	</section> -->
 
 	<img style="max-width: 350px; margin: auto;" src="images\mountaindewandunclechips.png" alt="pyaari with mountain dew and uncle chips. the best combo" />
+	</div>
 {% endblock %}

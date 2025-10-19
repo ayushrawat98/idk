@@ -41,8 +41,8 @@ route.post('/board/:boardName', upload.single("file"), async (req, res, next) =>
 	//redirect to newly created thread with the id
 	//insert file
 	let fileObj = {
-		path : 'files/'+req.file.filename,
-		thumbnail_path : 'files/'+req.file.filename,
+		path : req.file.filename,
+		thumbnail_path : req.file.filename,
 		mime_type : req.file.mimetype,
 		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 	}
@@ -81,8 +81,8 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"),  async
 
 	if(req.file){
 		let fileObj = {
-			path : 'files/'+req.file.filename,
-			thumbnail_path : 'files/'+req.file.filename,
+			path : req.file.filename,
+			thumbnail_path : req.file.filename,
 			mime_type : req.file.mimetype,
 			created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 		}

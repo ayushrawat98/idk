@@ -7,9 +7,11 @@
 
 {% block main %}
 
-	<h1>/{{board.name}}/</h1>
-	<p>{{board.description}}</p>
-	<button class="newPostButton">Create new post</button>
+	<div class="textCenter">
+		<h1>/{{board.name}}/</h1>
+		<p>{{board.description}}</p>
+		<button class="newPostButton">Create new post</button>
+	</div>
 
 	<div class="newPostWindow" hidden="true" >
 		<form method="post" enctype="multipart/form-data">

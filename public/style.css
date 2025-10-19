@@ -2,40 +2,37 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 main {
 	padding: 12px;
+	background-color: whitesmoke;
 }
 
-.navlinks {
+.navLinks {
 	margin: 0px 0px 12px;
 
 	ul {
 		list-style: none;
-		/* remove bullets */
 		padding: 0;
 		margin: 0;
 	}
 
 	li {
 		display: inline-block;
-		/* put them in one line */
 		margin-right: 10px;
-		/* optional spacing */
 	}
 
-	/* a {
-		text-decoration: none;
-		color: inherit;
-	} */
+
 }
 
-.fixed{
-	position: sticky;
-	top: 0;
-	background-color: whitesmoke;
+.textCenter {
+	text-align: center;
+}
+
+button,input, textarea{
+	padding: 4px;
 }
 
 .indexImages {
@@ -50,13 +47,14 @@ main {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+	padding: 8px 0px;
 }
 
 .post {
-	/* border: 1px solid black;
-	border-radius: 8px; */
-	border-top: 1px solid black;
-	border-bottom: 1px solid black;
+	border: 1px solid black;
+	border-radius: 2px;
+	/* border-top: 1px solid black; */
+	/* border-bottom: 1px solid black; */
 	padding: 12px;
 
 	img {
@@ -64,7 +62,7 @@ main {
 		margin-right: 12px;
 	}
 
-	p{
+	p {
 		white-space: pre-wrap;
 	}
 
@@ -73,6 +71,10 @@ main {
 		clear: both;
 		display: table;
 	}
+}
+
+.postFooter {
+	padding-top: 8px;
 }
 
 

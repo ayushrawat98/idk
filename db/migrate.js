@@ -1,5 +1,5 @@
 
-import instance from "./db"
+import instance from "./db.js"
 
 instance.insertBoard.run('b','random bitching')
 instance.insertBoard.run('fit','yog and fitness')

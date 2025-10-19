@@ -1,51 +1,91 @@
 import express from 'express';
+import instance from '../db/db.js';
+import upload from '../lib/multer.js';
 
 const route = express.Router()
 
-route.get('/:boardName', async (req, res, next) => {
+route.get('/', async (req, res, next) => {
+	const boardsList = instance.getBoards()
+	const recentImages = instance.getRecentImages()
+	return res.render('index.html', {boards : boardsList, title : 'IndiaChan', images : recentImages , index : true});
+})
+
+route.get('/board/:boardName', async (req, res, next) => {
+	const boardsList = instance.getBoards()
+	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
+	const threadsList = instance.getThreads(currentBoard.id)
+	// console.log(threadsList)
+
 	return res.render('board.html', {
-		board: req.params.boardName,
-		boards: ['b', 'g', 'fit', 'fa'],
-		datalist: [
-			{
-				name: 'piyush',
-				date : new Date(),
-				postNumber : 1234,
-				board : 'b',
-				content: "Standing here i realise you were just like me with someone just like you but whose to judge the rioght from wrong when our gaurd is down i think we will both agree that violence breeds violence and in the end it has to be this way"
-			},
-			{
-				name : 'anonymous',
-				date : new Date(),
-				postNumber : 76543,
-				board : 'b',
-				content : "Arre yaar iss admin ki such me maaa ki chutttt"
-			}
-		]
+		board: currentBoard,
+		boards: boardsList,
+		datalist: threadsList
 	});
 })
 
-route.get('/:boardName/thread/:threadName', async (req, res, next) => {
+route.post('/board/:boardName', upload.single("file"), async (req, res, next) => {
+	//redirect to newly created thread with the id
+	//insert file
+	let fileObj = {
+		path : 'files/'+req.file.filename,
+		thumbnail_path : 'files/'+req.file.filename,
+		mime_type : req.file.mimetype,
+		created_at : new Date().toLocaleString("en-IN")
+	}
+	const newFile = instance.insertFile(fileObj)
+	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0].id
+	let obj = {
+		board_id : boardId,
+		username : req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
+		title : req.body.title,
+		content : req.body.content,
+		op_file_id : newFile.lastInsertRowid,
+		created_at : new Date().toLocaleString('en-IN')
+	}
+	const newThread = instance.insertThread(obj)
+	return res.redirect('/board/'+ req.params.boardName)
+})
+
+route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
+	const boardsList = instance.getBoards()
+	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
+	const currentThread = instance.getThreadForPost(req.params.threadName) //threadName is a integer
+	const currentPosts = instance.getPosts(req.params.threadName)
+	console.log(currentPosts)
+	const combined = [currentThread, ...currentPosts]
 	return res.render('thread.html', {
-		board: req.params.boardName,
-		boards: ['b', 'g', 'fit', 'fa'],
-		datalist: [
-			{
-				name: 'piyush',
-				date : new Date(),
-				postNumber : 1234,
-				board : 'b',
-				content: "Standing here i realise you were just like me with someone just like you but whose to judge the rioght from wrong when our gaurd is down i think we will both agree that violence breeds violence and in the end it has to be this way"
-			},
-			{
-				name : 'anonymous',
-				date : new Date(),
-				postNumber : 76543,
-				board : 'b',
-				content : "Arre yaar iss admin ki such me maaa ki chutttt"
-			}
-		]
+		board: currentBoard,
+		boards: boardsList,
+		datalist: combined
 	});
 })
+
+route.post('/board/:boardName/thread/:threadName', upload.single("file"),  async (req, res, next) => {
+
+	let newFile = undefined
+
+	if(req.file){
+		let fileObj = {
+			path : 'files/'+req.file.filename,
+			thumbnail_path : 'files/'+req.file.filename,
+			mime_type : req.file.mimetype,
+			created_at : new Date().toLocaleString("en-IN")
+		}
+		newFile = instance.insertFile(fileObj)
+	}
+	
+
+	let obj = {
+		thread_id : req.params.threadName,
+		username : req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
+		content : req.body.content,
+		file_id : newFile?.lastInsertRowid ?? null,
+		created_at : new Date().toLocaleString('en-IN')
+	}
+
+	instance.insertPost(obj)
+	return res.redirect('/board/'+ req.params.boardName + '/thread/' + req.params.threadName)
+})
+
 
 export { route as boardRoute }

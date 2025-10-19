@@ -10,7 +10,7 @@ main {
 }
 
 .navlinks {
-	margin: 12px 0px;
+	margin: 0px 0px 12px;
 
 	ul {
 		list-style: none;
@@ -30,6 +30,12 @@ main {
 		text-decoration: none;
 		color: inherit;
 	} */
+}
+
+.fixed{
+	position: sticky;
+	top: 0;
+	background-color: whitesmoke;
 }
 
 .indexImages {
@@ -55,6 +61,7 @@ main {
 
 	img {
 		float: left;
+		margin-right: 12px;
 	}
 
 	p::after {
@@ -70,7 +77,7 @@ main {
 	padding: 12px;
 	border: 1px solid black;
 	z-index: 2;
-	position: absolute;
+	position: fixed;
 	top: 25px;
-	left: 100px;
+	left: 50px;
 }

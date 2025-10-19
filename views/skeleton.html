@@ -19,22 +19,24 @@
 		
 		<main>
 
-			{% block main %}
-				Content goes here.
-			{% endblock %}
-
 			{% if not index %}
 			<nav class="navlinks">
 				<ul>
 					<li><a href="">main</a></li>
 					{% for board in boards %}
-					<li><a href="/board/{{board}}">/{{board}}/</a></li>
+					<li><a href="/board/{{board.name}}">/{{board.name}}/</a></li>
 					{% else %}
 					<p>No boards available :&lt;</p>
 					{% endfor %}
 				</ul>
 			</nav>
 			{% endif %}
+
+			{% block main %}
+				Content goes here.
+			{% endblock %}
+
+			
 
 		</main>
 

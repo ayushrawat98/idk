@@ -3,9 +3,6 @@ import nunjucks from 'nunjucks';
 import path from "path";
 import { fileURLToPath } from "url";
 import { boardRoute } from './routes/board.route.js';
-import { threadRoute }  from './routes/thread.route.js';
-
-
 
 const app = express()
 
@@ -20,11 +17,8 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get('/', async (req, res, next) => {
-	return res.render('index.html', {boards : ['b', 'g', 'fit', 'fa'], title : 'IndiaChan', images : ['/images/sugawara1.png', '/images/sugawara2.png'] , index : true});
-})
-app.use('/board', boardRoute)
-// app.use('/thread', threadRoute)
+
+app.use('', boardRoute)
 
 app.listen(3000, () => {
 	console.log("Server started at port 3000")

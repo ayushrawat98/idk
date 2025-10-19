@@ -14,7 +14,7 @@
 	<section class="indexImages">
 		<h3>Recent images</h3>
 		{% for image in images %}
-		<img src="{{image}}" alt="pyaari" height="100" width="100"/>
+		<img src="{{image.path}}" alt="pyaari" height="100" width="100"/>
 		{% else %}
 		<p>No images :&lt;</p>
 		{% endfor %}
@@ -23,9 +23,9 @@
 	<section class="indexStats">
 		<h3>Statistics</h3>
 		<p>
-			Total posts : 123
+			Total posts : Apni maa se puch
 			<br/>
-			Post per hour : 456
+			Post per hour : Apni maa se puch
 		</p>
 	</section>
 {% endblock %}

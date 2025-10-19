@@ -2,7 +2,7 @@
 <nav class="navlinks">
 	<ul>
 		{% for board in boards %}
-		<li><a href="/board/{{board}}">/{{board}}/</a></li>
+		<li><a href="/board/{{board.name}}">/{{board.name}}/</a></li>
 		{% else %}
 		<p>No boards available :&lt;</p>
 		{% endfor %}
@@ -22,23 +22,25 @@
 
 	<article class="post">
 		<header>
-			<h3>Some fooking tile for it</h3>
+			<h3>{{data.title}}</h3>
 		</header>
 		<p>
-			<img src="/images/sugawara1.png" height="100" width="100"/>
+			{% if data.image_path %}
+				<img src="{{data.image_path}}" height="100" width="100" loading="lazy"/>
+			{% endif %}
 			{{data.content}}
 		</p>
 		<footer>
 			{% if board %}
-				<span>2 Replies</span>
-				<a href="board/{{board}}/thread/{{data.postNumber}}">View</a>
+				<span>{{data.reply_count}} replies</span>
+				<a href="board/{{board.name}}/thread/{{data.id}}">View</a>
 			{% else %}
-				<button id="replyButton" data-post-number="{{data.postNumber}}">Reply</button>
+				<button id="replyButton" data-post-number="{{data.id}}">Reply</button>
 			{% endif %}
 			<br>
-			<span>~{{data.name}}</span>
-			<span>{{data.date.toLocaleString()}}</span>
-			<span>#{{data.postNumber}}</span>
+			<span>~{{data.username}}</span>
+			<span>{{data.created_at}}</span>
+			<span>#{{data.id}}</span>
 			
 		</footer>
 	</article>

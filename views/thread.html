@@ -7,15 +7,60 @@
 
 {% block main %}
 	{{ macros.postList(datalist) }}
+
+	<div class="newPostWindow" hidden="true" >
+		<form method="post" enctype="multipart/form-data">
+			<label for="name">Name :</label>
+			<br>
+			<input type="text" id="name" name="name" placeholder="Anonymous"/>
+			<br>
+			<label for="content">Content :</label>
+			<br>
+			<textarea rows="5" cols="35" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
+			<br>
+			<label for="file">File :</label>
+			<br>
+			<input type="file" id="file" name="file" placeholder="file" accept="image/*"/>
+			<br><br>
+			<button type="submit">Submit</button>
+			<button type="reset">Reset</button>
+			<button type="button" class="newPostButton">Close</button>
+		</form>
+	</div>
+
 {% endblock %}
 
 {% block script %}
 	<script>
 		const replyButton = document.querySelectorAll("button")
+		let newPostWindow = document.querySelector('.newPostWindow')
 		replyButton.forEach(btn => {
 				btn.addEventListener('click', () => {
-					alert(btn.dataset.postNumber)
+					// alert(btn.dataset.postNumber)
+					newPostWindow.toggleAttribute('hidden')
 				})
 			})
+
+		let offsetX = 0, offsetY = 0, isDragging = false;
+
+		newPostWindow.addEventListener('mousedown', (e) => {
+			isDragging = true;
+			// Record where you clicked
+			offsetX = e.clientX - newPostWindow.offsetLeft;
+			offsetY = e.clientY - newPostWindow.offsetTop;
+			newPostWindow.style.cursor = 'grabbing';
+		});
+
+		document.addEventListener('mousemove', (e) => {
+			if (!isDragging) return;
+			// Move the element
+			newPostWindow.style.left = e.clientX - offsetX + 'px';
+			newPostWindow.style.top = e.clientY - offsetY + 'px';
+		});
+
+		document.addEventListener('mouseup', () => {
+			isDragging = false;
+			newPostWindow.style.cursor = 'move';
+		});
 	</script>
 {% endblock %}

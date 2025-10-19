@@ -24,18 +24,16 @@
 		<header>
 			<h3>{{data.title}}</h3>
 		</header>
-		<p>
-			{% if data.image_path %}
-				<img src="{{data.image_path}}" height="100" width="100" loading="lazy"/>
-			{% endif %}
-			{{data.content}}
-		</p>
+		{% if data.image_path %}
+			<img src="{{data.image_path}}" height="100" width="100" loading="lazy"/>
+		{% endif %}
+		<p>{{data.content}}</p>
 		<footer>
 			{% if board %}
 				<span>{{data.reply_count}} replies</span>
 				<a href="board/{{board.name}}/thread/{{data.id}}">View</a>
 			{% else %}
-				<button id="replyButton" data-post-number="{{data.id}}">Reply</button>
+			<button id="replyButton" data-post-number="{{data.id}}">Reply</button>
 			{% endif %}
 			<br>
 			<span>~{{data.username}}</span>

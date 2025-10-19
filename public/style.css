@@ -64,6 +64,10 @@ main {
 		margin-right: 12px;
 	}
 
+	p{
+		white-space: pre-wrap;
+	}
+
 	p::after {
 		content: "";
 		clear: both;

@@ -30,7 +30,7 @@ route.post('/board/:boardName', upload.single("file"), async (req, res, next) =>
 		path : 'files/'+req.file.filename,
 		thumbnail_path : 'files/'+req.file.filename,
 		mime_type : req.file.mimetype,
-		created_at : new Date().toLocaleString("en-IN")
+		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 	}
 	const newFile = instance.insertFile(fileObj)
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0].id
@@ -40,7 +40,8 @@ route.post('/board/:boardName', upload.single("file"), async (req, res, next) =>
 		title : req.body.title,
 		content : req.body.content,
 		op_file_id : newFile.lastInsertRowid,
-		created_at : new Date().toLocaleString('en-IN')
+		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+		updated_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 	}
 	const newThread = instance.insertThread(obj)
 	return res.redirect('/board/'+ req.params.boardName)
@@ -51,7 +52,7 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
 	const currentThread = instance.getThreadForPost(req.params.threadName) //threadName is a integer
 	const currentPosts = instance.getPosts(req.params.threadName)
-	console.log(currentPosts)
+	// console.log(currentPosts)
 	const combined = [currentThread, ...currentPosts]
 	return res.render('thread.html', {
 		board: currentBoard,
@@ -69,21 +70,27 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"),  async
 			path : 'files/'+req.file.filename,
 			thumbnail_path : 'files/'+req.file.filename,
 			mime_type : req.file.mimetype,
-			created_at : new Date().toLocaleString("en-IN")
+			created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 		}
 		newFile = instance.insertFile(fileObj)
 	}
 	
+	const boardsList = instance.getBoards()
+	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
 
 	let obj = {
-		thread_id : req.params.threadName,
+		board_id : currentBoard.id,
+		parent_id : req.params.threadName,
 		username : req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
 		content : req.body.content,
 		file_id : newFile?.lastInsertRowid ?? null,
-		created_at : new Date().toLocaleString('en-IN')
+		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+		updated_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 	}
 
 	instance.insertPost(obj)
+	instance.updateThread(new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), req.params.threadName)
+	
 	return res.redirect('/board/'+ req.params.boardName + '/thread/' + req.params.threadName)
 })
 

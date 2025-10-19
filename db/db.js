@@ -27,26 +27,16 @@ class DB {
 					disabled integer default 0
 				);
 
-				create table if not exists threads (
-					id integer primary key autoincrement,
-					board_id integer not null references boards(id) on delete cascade,
-					username text,
-					title text,
-					content text,
-					op_file_id integer references files(id),
-					pinned integer default 0,
-  					locked integer default 0,
-  					created_at text,
-  					updated_at text
-				);
-
-				create table if not exists posts (
-  					id integer primary key autoincrement,
-  					thread_id integer not null references threads(id) on delete cascade,
-  					username text,
-  					content text,
-  					file_id integer references files(id),
-  					created_at text
+				CREATE TABLE if not exists posts (
+					id INTEGER PRIMARY KEY AUTOINCREMENT,
+					board_id INTEGER NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
+					parent_id INTEGER REFERENCES posts(id) ON DELETE CASCADE,
+					username TEXT,
+					title TEXT,
+					content TEXT,
+					file_id INTEGER REFERENCES files(id),
+					created_at TEXT,
+					updated_at text
 				);
 
 				create table if not exists files (
@@ -66,13 +56,17 @@ class DB {
 		this.queries = {
 			insertBoard: this.db.prepare('insert into boards (name, description) values (?,?)'),
 			getBoards: this.db.prepare('select id, name, description from boards where disabled = 0'),
-			insertThread: this.db.prepare('insert into threads (board_id, username, title, content, op_file_id, created_at) values (?,?,?,?,?,?)'),
-			getThreads: this.db.prepare('select t.id, t.title, t.content, t.username, f.path as image_path, t.created_at, count(p.id) as reply_count from threads t left join files f on t.op_file_id = f.id left join posts p on p.thread_id = t.id where t.board_id = ? group by t.id order by t.created_at desc limit 100;'),
+
+			insertThread: this.db.prepare('insert into posts (board_id, parent_id, username, title, content, file_id, created_at, updated_at) values (?,?,?,?,?,?,?,?)'),
+			getThreads: this.db.prepare('select t.id, t.title, t.content, t.username, t.created_at, f.path as image_path, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.board_id = ? and t.parent_id is null group by t.id order by t.updated_at desc limit 100;'),
+			updateThread : this.db.prepare('update posts set updated_at = ? where id = ?'),
+
 			insertFile : this.db.prepare('insert into files (path, thumbnail_path, mime_type, created_at) values (?,?,?,?)'),
-			recentImages : this.db.prepare('select path from files order by created_at desc limit 3'),
-			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, f.path as image_path, t.created_at from threads t left join files f on t.op_file_id = f.id where t.id = ?'),
-			getPosts : this.db.prepare('select p.id, p.thread_id, p.username, p.content, p.created_at, f.path as image_path from posts p left join files f on p.file_id = f.id where thread_id = ?'),
-			insertPost : this.db.prepare('insert into posts (thread_id, username, content, file_id, created_at) values (?,?,?,?,?)')
+			recentImages : this.db.prepare('select path from files order by created_at desc limit 6'),
+			
+			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, f.path as image_path, t.created_at from posts t left join files f on t.file_id = f.id where t.id = ?'),
+			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, f.path as image_path from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
+			insertPost : this.db.prepare('insert into posts (board_id, parent_id, username, content, file_id, created_at) values (?,?,?,?,?,?)')
 		}
 		// 	getThreads: this.db.prepare('select id, content, file, ogfilename, updated_at from posts where boardname = ? and threadid is null order by created_at desc limit 100'),
 		// 	getThread: this.db.prepare('select  * from posts where id = ?'),
@@ -91,7 +85,7 @@ class DB {
 		// this.queries.insertBoard.run('fit','yog and fitness')
 		// this.queries.insertBoard.run('fa','fashion vastra')
 		// this.queries.insertBoard.run('g','tech nerds')
-		// this.queries.insertFile.run('/images/sugawara1.png','/images/sugawara2.png')
+		// // this.queries.insertFile.run('/images/sugawara1.png','/images/sugawara2.png')
 		// this.queries.insertThread.run(1, "Anonymous", "", "Dand dan ter yo nou nkdnnajbdjbasdbaskdjba dkas asdkjasbda dadhjad", 1)
 		// this.queries.insertThread.run(1, "diuys", "wtf is this website", "Abra ka dabra gili gili chu", 1)
 		// console.log(this.queries.getThreads.all(1))
@@ -106,7 +100,7 @@ class DB {
 	}
 
 	insertThread(obj) {
-		return this.queries.insertThread.run(obj.board_id, obj.username, obj.title, obj.content, obj.op_file_id, obj.created_at)
+		return this.queries.insertThread.run(obj.board_id, obj.parent_id, obj.username, obj.title, obj.content, obj.op_file_id, obj.created_at, obj.updated_at)
 	}
 
 	getThreads(id) {
@@ -131,9 +125,35 @@ class DB {
 	}
 
 	insertPost(obj){
-		return this.queries.insertPost.run(obj.thread_id, obj.username, obj.content, obj.file_id, obj.created_at)
+		return this.queries.insertPost.run(obj.board_id, obj.parent_id, obj.username, obj.content, obj.file_id, obj.created_at)
+	}
+
+	updateThread(date, id){
+		return this.queries.updateThread.run(date, id)
 	}
 }
 
 const instance = new DB()
 export default instance
+
+// create table if not exists threads (
+				// 	id integer primary key autoincrement,
+				// 	board_id integer not null references boards(id) on delete cascade,
+				// 	username text,
+				// 	title text,
+				// 	content text,
+				// 	op_file_id integer references files(id),
+				// 	pinned integer default 0,
+  				// 	locked integer default 0,
+  				// 	created_at text,
+  				// 	updated_at text
+				// );
+
+				// create table if not exists posts (
+  				// 	id integer primary key autoincrement,
+  				// 	thread_id integer not null references threads(id) on delete cascade,
+  				// 	username text,
+  				// 	content text,
+  				// 	file_id integer references files(id),
+  				// 	created_at text
+				// );

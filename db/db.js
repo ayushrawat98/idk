@@ -69,27 +69,6 @@ class DB {
 			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, f.path as image_path from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
 			insertPost : this.db.prepare('insert into posts (board_id, parent_id, username, content, file_id, created_at) values (?,?,?,?,?,?)')
 		}
-		// 	getThreads: this.db.prepare('select id, content, file, ogfilename, updated_at from posts where boardname = ? and threadid is null order by created_at desc limit 100'),
-		// 	getThread: this.db.prepare('select  * from posts where id = ?'),
-		// 	deleteThread: this.db.prepare('delete from posts where id = ?'),
-		// 	createThread: this.db.prepare('insert into posts (boardname, content, ogfilename, file, mimetype, created_at, updated_at, username) values (?,?,?,?, ?,?,?,?)'),
-		// 	getReplies: this.db.prepare('select id, content, ogfilename, file, mimetype from posts where threadid = ?'),
-		// 	createReply: this.db.prepare('insert into posts (boardname, threadid, content, ogfilename, file, mimetype, created_at, replyto, username) values (?,?,?,?,?, ?,?,?,?)'),
-		// 	updateReplyCount: this.db.prepare('update posts set replycount = replycount + 1 where id = ?'),
-		// 	updateDate: this.db.prepare('update posts set updated_at = ? where id = ?'),
-		// 	updateUsername: this.db.prepare('update posts set username = ? where id = ?'),
-		// 	banUsername: this.db.prepare('insert into bans (username) values (?)'),
-		// 	checkBan: this.db.prepare('select username from bans where username = ?'),
-		// 	editPost: this.db.prepare('update posts set content = ? where id = ?')
-		// }
-		// this.queries.insertBoard.run('b','random bitching')
-		// this.queries.insertBoard.run('fit','yog and fitness')
-		// this.queries.insertBoard.run('fa','fashion vastra')
-		// this.queries.insertBoard.run('g','tech nerds')
-		// // this.queries.insertFile.run('/images/sugawara1.png','/images/sugawara2.png')
-		// this.queries.insertThread.run(1, "Anonymous", "", "Dand dan ter yo nou nkdnnajbdjbasdbaskdjba dkas asdkjasbda dadhjad", 1)
-		// this.queries.insertThread.run(1, "diuys", "wtf is this website", "Abra ka dabra gili gili chu", 1)
-		// console.log(this.queries.getThreads.all(1))
 	}
 
 	insertBoard(name, description) {
@@ -140,25 +119,3 @@ class DB {
 
 const instance = new DB()
 export default instance
-
-// create table if not exists threads (
-				// 	id integer primary key autoincrement,
-				// 	board_id integer not null references boards(id) on delete cascade,
-				// 	username text,
-				// 	title text,
-				// 	content text,
-				// 	op_file_id integer references files(id),
-				// 	pinned integer default 0,
-  				// 	locked integer default 0,
-  				// 	created_at text,
-  				// 	updated_at text
-				// );
-
-				// create table if not exists posts (
-  				// 	id integer primary key autoincrement,
-  				// 	thread_id integer not null references threads(id) on delete cascade,
-  				// 	username text,
-  				// 	content text,
-  				// 	file_id integer references files(id),
-  				// 	created_at text
-				// );

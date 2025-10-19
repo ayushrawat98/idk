@@ -19,7 +19,7 @@ route.delete('/:threadId', async (req, res, next) => {
 	const tempfile = instance.getFile(temp.file_id)
 	instance.db.prepare('delete from posts where id=?').run(req.params.threadId)
 	instance.db.prepare('delete from files where id=?').run(temp.file_id)
-	console.log(tempfile.path)
+	// console.log(tempfile.path)
 	fs.unlink(path.join('./public/'+tempfile.path), () => {})
 	return res.send("done")
 })
@@ -44,7 +44,7 @@ route.post('/board/:boardName', upload.single("file"), async (req, res, next) =>
 		path : req.file.filename,
 		thumbnail_path : req.file.filename,
 		mime_type : req.file.mimetype,
-		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+		created_at : new Date().toISOString()
 	}
 	const newFile = instance.insertFile(fileObj)
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0].id
@@ -54,8 +54,8 @@ route.post('/board/:boardName', upload.single("file"), async (req, res, next) =>
 		title : req.body.title,
 		content : req.body.content,
 		op_file_id : newFile.lastInsertRowid,
-		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-		updated_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+		created_at : new Date().toISOString(),
+		updated_at : new Date().toISOString()
 	}
 	const newThread = instance.insertThread(obj)
 	return res.redirect('/board/'+ req.params.boardName)
@@ -84,7 +84,7 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"),  async
 			path : req.file.filename,
 			thumbnail_path : req.file.filename,
 			mime_type : req.file.mimetype,
-			created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+			created_at : new Date().toISOString()
 		}
 		newFile = instance.insertFile(fileObj)
 	}
@@ -98,12 +98,12 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"),  async
 		username : req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
 		content : req.body.content,
 		file_id : newFile?.lastInsertRowid ?? null,
-		created_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-		updated_at : new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+		created_at : new Date().toISOString(),
+		updated_at : new Date().toISOString()
 	}
 
 	instance.insertPost(obj)
-	instance.updateThread(new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }), req.params.threadName)
+	instance.updateThread(new Date().toISOString(), req.params.threadName)
 	
 	return res.redirect('/board/'+ req.params.boardName + '/thread/' + req.params.threadName)
 })

@@ -6,16 +6,22 @@ import { boardRoute } from './routes/board.route.js';
 
 const app = express()
 
-nunjucks.configure('views', {
+const nunjucksEnv = nunjucks.configure('views', {
 	autoescape: true,
 	express: app,
 	noCache : false
 });
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+//filter for getting indian date
+nunjucksEnv.addFilter('indianDate', (str) => {
+	let t = new Date(str)
+	return t.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
+})
 
-app.use(express.static(path.join(__dirname, "public")));
+//only in test url
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+// app.use('/public',express.static(path.join(__dirname, "public")));
 
 
 app.use('', boardRoute)

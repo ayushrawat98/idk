@@ -25,7 +25,7 @@
 			<h3>{{data.title}}</h3>
 		</header>
 		{% if data.image_path %}
-			<img src="files/{{data.image_path}}" height="100" width="100" loading="lazy"/>
+			<img src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/>
 		{% endif %}
 		<p>{{data.content}}</p>
 		<footer class="postFooter">
@@ -35,7 +35,7 @@
 				<br>
 			{% endif %}
 			<span>~{{data.username}}</span>
-			<span>{{data.created_at}}</span>
+			<span>{{data.created_at | indianDate}}</span>
 			<span>#{{data.id}}</span>
 			{% if not board %}
 				<button id="replyButton" data-post-number="{{data.id}}">Reply</button>

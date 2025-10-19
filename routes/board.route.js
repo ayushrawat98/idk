@@ -1,6 +1,7 @@
 import express from 'express';
 import instance from '../db/db.js';
 import upload from '../lib/multer.js';
+import fs from "fs"
 
 const route = express.Router()
 
@@ -8,6 +9,19 @@ route.get('/', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const recentImages = instance.getRecentImages()
 	return res.render('index.html', {boards : boardsList, title : 'IndiaChan', images : recentImages , index : true});
+})
+
+route.delete('/:threadId', async (req, res, next) => {
+	if(req.query.key != '1'){
+		return res.end()
+	}
+	const temp = instance.getThreadForPost(req.params.threadId)
+	const tempfile = instance.getFile(temp.file_id)
+	instance.db.prepare('delete from posts where id=?').run(req.params.threadId)
+	instance.db.prepare('delete from files where id=?').run(temp.file_id)
+	console.log(tempfile.path)
+	fs.unlink(path.join('./public/'+tempfile.path), () => {})
+	return res.send("done")
 })
 
 route.get('/board/:boardName', async (req, res, next) => {

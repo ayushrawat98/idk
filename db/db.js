@@ -63,8 +63,9 @@ class DB {
 
 			insertFile : this.db.prepare('insert into files (path, thumbnail_path, mime_type, created_at) values (?,?,?,?)'),
 			recentImages : this.db.prepare('select path from files order by created_at desc limit 6'),
+			getFile : this.db.prepare('select * from files where id = ?'),
 			
-			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, f.path as image_path, t.created_at from posts t left join files f on t.file_id = f.id where t.id = ?'),
+			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, t.file_id, t.created_at, f.path as image_path from posts t left join files f on t.file_id = f.id where t.id = ?'),
 			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, f.path as image_path from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
 			insertPost : this.db.prepare('insert into posts (board_id, parent_id, username, content, file_id, created_at) values (?,?,?,?,?,?)')
 		}
@@ -114,6 +115,10 @@ class DB {
 
 	getRecentImages(){
 		return this.queries.recentImages.all()
+	}
+
+	getFile(id){
+		return this.queries.getFile.get(id)
 	}
 
 	getThreadForPost(id){

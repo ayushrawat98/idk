@@ -1,10 +1,16 @@
 import sqlite from "better-sqlite3"
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 class DB {
 	db;
 	queries;
 	constructor() {
-		this.db = sqlite('./db/indiachan.db', {})
+		this.db = sqlite(path.join(__dirname, 'indiachan.db'), {})
 
 		this.db.pragma('journal_mode = WAL')
 		this.db.pragma("synchronous = NORMAL");

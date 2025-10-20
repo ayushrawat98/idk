@@ -17,7 +17,7 @@
 			<br>
 			<label for="content">Content :</label>
 			<br>
-			<textarea rows="5" cols="35" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
+			<textarea rows="8" cols="40" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
 			<br>
 			<label for="file">File :</label>
 			<br>
@@ -25,7 +25,7 @@
 			<br><br>
 			<button type="submit">Submit</button>
 			<button type="reset">Reset</button>
-			<button type="button" class="newPostButton">Close</button>
+			<button type="button" class="replyButton">Close</button>
 		</form>
 	</div>
 
@@ -33,7 +33,7 @@
 
 {% block script %}
 	<script>
-		const replyButton = document.querySelectorAll("button")
+		const replyButton = document.querySelectorAll(".replyButton")
 		let newPostWindow = document.querySelector('.newPostWindow')
 		const dragHeader = document.getElementById('dragHeader')
 		const textbox = document.getElementById('content')

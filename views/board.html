@@ -14,6 +14,7 @@
 	</div>
 
 	<div class="newPostWindow" hidden="true" >
+		<div style="height: 20px;background-color: rgb(186, 184, 184);" id="dragHeader"></div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -25,7 +26,7 @@
 			<br>
 			<label for="content">Content :</label>
 			<br>
-			<textarea rows="5" cols="35" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
+			<textarea rows="8" cols="40" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
 			<br>
 			<label for="file">File :</label>
 			<br>
@@ -45,17 +46,18 @@
 	<script>
 		let newPostButton = document.querySelectorAll('.newPostButton')
 		let newPostWindow = document.querySelector('.newPostWindow')
+		const dragHeader = document.getElementById('dragHeader')
 		newPostButton.forEach(element => element.addEventListener('click', () => {
 			newPostWindow.toggleAttribute('hidden')
 		}))
 		let offsetX = 0, offsetY = 0, isDragging = false;
 
-		newPostWindow.addEventListener('mousedown', (e) => {
+		dragHeader.addEventListener('mousedown', (e) => {
 			isDragging = true;
 			// Record where you clicked
 			offsetX = e.clientX - newPostWindow.offsetLeft;
 			offsetY = e.clientY - newPostWindow.offsetTop;
-			newPostWindow.style.cursor = 'grabbing';
+			dragHeader.style.cursor = 'grabbing';
 		});
 
 		document.addEventListener('mousemove', (e) => {
@@ -67,7 +69,7 @@
 
 		document.addEventListener('mouseup', () => {
 			isDragging = false;
-			newPostWindow.style.cursor = 'move';
+			dragHeader.style.cursor = 'move';
 		});
 	</script>
 {% endblock %}

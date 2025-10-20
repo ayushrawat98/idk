@@ -38,7 +38,7 @@
 			<span>{{data.created_at | indianDate}}</span>
 			<span>#{{data.id}}</span>
 			{% if not board %}
-				<button id="replyButton" data-post-number="{{data.id}}">Reply</button>
+				<button class="replyButton" data-post-number="{{data.id}}">Reply</button>
 			{% endif %}
 		</footer>
 	</article>

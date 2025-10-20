@@ -56,6 +56,9 @@ button,input, textarea{
 	width: fit-content;
 	padding: 12px;
 
+	header{
+		margin-bottom: 8px;
+	}
 
 	.thumbnail {
 		float: left;
@@ -77,14 +80,17 @@ button,input, textarea{
 		clear: both;
 		display: table;
 	}
-}
 
-.postFooter {
-	padding-top: 8px;
-	&>*{
-		margin-right: 4px;
+	footer {
+		padding-top: 8px;
+		&>*{
+			margin-right: 4px;
+			margin-bottom: 2px;
+		}
 	}
 }
+
+
 
 
 .newPostWindow {

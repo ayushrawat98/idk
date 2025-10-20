@@ -53,9 +53,8 @@ button,input, textarea{
 
 .post {
 	border: 1px solid black;
-	border-radius: 2px;
-	/* border-top: 1px solid black; */
-	/* border-bottom: 1px solid black; */
+	border-radius: 4px;
+	width: fit-content;
 	padding: 12px;
 
 

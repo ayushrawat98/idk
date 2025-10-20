@@ -11,7 +11,8 @@ main {
 }
 
 .navLinks {
-	margin: 0px 0px 12px;
+
+	padding: 8px 0px;
 
 	ul {
 		list-style: none;
@@ -36,11 +37,10 @@ button,input, textarea{
 }
 
 .indexImages {
-	margin: 12px 0px;
-}
-
-.indexStats {
-	margin: 12px 0px;
+	padding : 8px 0px;
+	h3{
+		padding-bottom: 4px;
+	}
 }
 
 .postList {
@@ -110,6 +110,7 @@ button,input, textarea{
 
 @media (max-width:768px) {
 	.post{
+		width: 100%;
 		.fullsizeMedia{
 			max-width: 100%;
 		}

@@ -57,6 +57,7 @@ button,input, textarea{
 	/* border-bottom: 1px solid black; */
 	padding: 12px;
 
+
 	img {
 		float: left;
 		margin-right: 12px;
@@ -80,7 +81,7 @@ button,input, textarea{
 
 .newPostWindow {
 	background-color: whitesmoke;
-	padding: 12px;
+	padding: 0px 12px 12px;
 	border: 1px solid black;
 	z-index: 2;
 	position: fixed;

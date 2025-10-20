@@ -25,7 +25,7 @@
 			<h3>{{data.title}}</h3>
 		</header>
 		{% if data.image_path %}
-			<img src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/>
+			<a href="/public/files/{{data.image_path}}" target="_blank"><img src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/></a>
 		{% endif %}
 		<p>{{data.content}}</p>
 		<footer class="postFooter">

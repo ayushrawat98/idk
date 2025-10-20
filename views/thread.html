@@ -9,6 +9,7 @@
 	{{ macros.postList(datalist) }}
 
 	<div class="newPostWindow" hidden="true" >
+		<div style="height: 20px;background-color: rgb(186, 184, 184);" id="dragHeader"></div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -34,21 +35,27 @@
 	<script>
 		const replyButton = document.querySelectorAll("button")
 		let newPostWindow = document.querySelector('.newPostWindow')
+		const dragHeader = document.getElementById('dragHeader')
+		const textbox = document.getElementById('content')
+
 		replyButton.forEach(btn => {
 				btn.addEventListener('click', () => {
 					// alert(btn.dataset.postNumber)
 					newPostWindow.toggleAttribute('hidden')
+					if(!newPostWindow.hasAttribute('hidden')){
+						textbox.value += ">>"+btn.dataset.postNumber+"\n"
+					}
 				})
 			})
 
 		let offsetX = 0, offsetY = 0, isDragging = false;
 
-		newPostWindow.addEventListener('mousedown', (e) => {
+		dragHeader.addEventListener('mousedown', (e) => {
 			isDragging = true;
 			// Record where you clicked
 			offsetX = e.clientX - newPostWindow.offsetLeft;
 			offsetY = e.clientY - newPostWindow.offsetTop;
-			newPostWindow.style.cursor = 'grabbing';
+			dragHeader.style.cursor = 'grabbing';
 		});
 
 		document.addEventListener('mousemove', (e) => {
@@ -60,7 +67,7 @@
 
 		document.addEventListener('mouseup', () => {
 			isDragging = false;
-			newPostWindow.style.cursor = 'move';
+			dragHeader.style.cursor = 'move';
 		});
 	</script>
 {% endblock %}

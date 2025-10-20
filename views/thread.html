@@ -9,7 +9,7 @@
 	{{ macros.postList(datalist) }}
 
 	<div class="newPostWindow" hidden="true" >
-		<div style="height: 20px;background-color: rgb(186, 184, 184);" id="dragHeader"></div>
+		<div id="dragHeader"></div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -25,7 +25,7 @@
 			<br><br>
 			<button type="submit">Submit</button>
 			<button type="reset">Reset</button>
-			<button type="button" class="replyButton">Close</button>
+			<button type="button" class="closeButton">Close</button>
 		</form>
 	</div>
 
@@ -37,19 +37,34 @@
 		let newPostWindow = document.querySelector('.newPostWindow')
 		const dragHeader = document.getElementById('dragHeader')
 		const textbox = document.getElementById('content')
+		const closeButton = document.querySelector(".closeButton")
+		const thumbnails = document.querySelectorAll(".thumbnail")
+
+		thumbnails.forEach(thumbnail => thumbnail.addEventListener('click', ()=>{
+			let temp = thumbnail.parentElement.querySelector('.fullsizeMedia')
+			temp?.toggleAttribute('hidden')
+			if(temp.tagName == "VIDEO"){
+				temp.pause()
+			}
+		}))
+
+
+		closeButton.addEventListener('click', () => {
+			newPostWindow.toggleAttribute('hidden')
+		})
 
 		replyButton.forEach(btn => {
 				btn.addEventListener('click', () => {
 					// alert(btn.dataset.postNumber)
-					newPostWindow.toggleAttribute('hidden')
-					if(!newPostWindow.hasAttribute('hidden')){
-						textbox.value += ">>"+btn.dataset.postNumber+"\n"
-					}
+					if(newPostWindow.hasAttribute('hidden')){
+						newPostWindow.toggleAttribute('hidden')
+					}	
+					textbox.value += ">>"+btn.dataset.postNumber+"\n"
 				})
 			})
 
 		let offsetX = 0, offsetY = 0, isDragging = false;
-
+		dragHeader.style.cursor = 'move';
 		dragHeader.addEventListener('mousedown', (e) => {
 			isDragging = true;
 			// Record where you clicked
@@ -65,7 +80,7 @@
 			newPostWindow.style.top = e.clientY - offsetY + 'px';
 		});
 
-		document.addEventListener('mouseup', () => {
+		dragHeader.addEventListener('mouseup', () => {
 			isDragging = false;
 			dragHeader.style.cursor = 'move';
 		});

@@ -7,7 +7,7 @@
 
 main {
 	padding: 12px;
-	background-color: whitesmoke;
+	background-color: #ffecb2;
 }
 
 .navLinks {
@@ -58,9 +58,13 @@ button,input, textarea{
 	padding: 12px;
 
 
-	img {
+	.thumbnail {
 		float: left;
 		margin-right: 12px;
+	}
+
+	.fullsizeMedia{
+		width: 50%;
 	}
 
 	p {
@@ -88,6 +92,19 @@ button,input, textarea{
 	border: 1px solid black;
 	z-index: 2;
 	position: fixed;
-	top: 25px;
-	left: 50px;
+	top: 10%;
+    left: 10%;
+
+	#dragHeader{
+		height: 20px;
+		background-color: rgb(186, 184, 184);
+	}
+}
+
+@media (max-width:768px) {
+	.post{
+		.fullsizeMedia{
+			width: 100%;
+		}
+	}
 }

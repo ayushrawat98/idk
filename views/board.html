@@ -14,7 +14,7 @@
 	</div>
 
 	<div class="newPostWindow" hidden="true" >
-		<div style="height: 20px;background-color: rgb(186, 184, 184);" id="dragHeader"></div>
+		<div id="dragHeader"></div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -51,7 +51,7 @@
 			newPostWindow.toggleAttribute('hidden')
 		}))
 		let offsetX = 0, offsetY = 0, isDragging = false;
-
+		dragHeader.style.cursor = 'move';
 		dragHeader.addEventListener('mousedown', (e) => {
 			isDragging = true;
 			// Record where you clicked
@@ -67,7 +67,7 @@
 			newPostWindow.style.top = e.clientY - offsetY + 'px';
 		});
 
-		document.addEventListener('mouseup', () => {
+		dragHeader.addEventListener('mouseup', () => {
 			isDragging = false;
 			dragHeader.style.cursor = 'move';
 		});

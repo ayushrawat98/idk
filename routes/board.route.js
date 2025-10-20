@@ -2,6 +2,12 @@ import express from 'express';
 import instance from '../db/db.js';
 import upload from '../lib/multer.js';
 import fs from "fs"
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { thumbnail } from '../lib/thumbnail.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const route = express.Router()
 
@@ -19,8 +25,11 @@ route.delete('/:threadId', async (req, res, next) => {
 	const tempfile = instance.getFile(temp.file_id)
 	instance.db.prepare('delete from posts where id=?').run(req.params.threadId)
 	instance.db.prepare('delete from files where id=?').run(temp.file_id)
-	// console.log(tempfile.path)
-	fs.unlink(path.join('./public/'+tempfile.path), () => {})
+	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
+	fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => {})
+	if(tempfile.mime_type.includes("video")){
+		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path+".png"), () => {})
+	}
 	return res.send("done")
 })
 
@@ -37,7 +46,7 @@ route.get('/board/:boardName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName', upload.single("file"), async (req, res, next) => {
+route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
 	//redirect to newly created thread with the id
 	//insert file
 	let fileObj = {
@@ -75,7 +84,7 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName/thread/:threadName', upload.single("file"),  async (req, res, next) => {
+route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail,  async (req, res, next) => {
 
 	let newFile = undefined
 

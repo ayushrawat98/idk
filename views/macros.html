@@ -25,7 +25,11 @@
 			<h3>{{data.title}}</h3>
 		</header>
 		{% if data.image_path %}
-			<a href="/public/files/{{data.image_path}}" target="_blank"><img src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/></a>
+			{% if "video" in data.mimetype %}
+				<a href="/public/files/{{data.image_path}}" target="_blank"><img src="/public/thumbnails/{{data.image_path}}.png" height="100" width="100" loading="lazy"/></a>
+			{% else %}
+				<a href="/public/files/{{data.image_path}}" target="_blank"><img src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/></a>
+			{% endif %}
 		{% endif %}
 		<p>{{data.content}}</p>
 		<footer class="postFooter">

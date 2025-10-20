@@ -58,15 +58,15 @@ class DB {
 			getBoards: this.db.prepare('select id, name, description from boards where disabled = 0'),
 
 			insertThread: this.db.prepare('insert into posts (board_id, parent_id, username, title, content, file_id, created_at, updated_at) values (?,?,?,?,?,?,?,?)'),
-			getThreads: this.db.prepare('select t.id, t.title, t.content, t.username, t.created_at, f.path as image_path, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.board_id = ? and t.parent_id is null group by t.id order by t.updated_at desc limit 100;'),
+			getThreads: this.db.prepare('select t.id, t.title, t.content, t.username, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.board_id = ? and t.parent_id is null group by t.id order by t.updated_at desc limit 100;'),
 			updateThread : this.db.prepare('update posts set updated_at = ? where id = ?'),
 
 			insertFile : this.db.prepare('insert into files (path, thumbnail_path, mime_type, created_at) values (?,?,?,?)'),
-			recentImages : this.db.prepare('select path from files order by created_at desc limit 6'),
+			recentImages : this.db.prepare("select path from files WHERE mime_type LIKE 'image/%' order by created_at desc limit 6"),
 			getFile : this.db.prepare('select * from files where id = ?'),
 			
-			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, t.file_id, t.created_at, f.path as image_path from posts t left join files f on t.file_id = f.id where t.id = ?'),
-			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, f.path as image_path from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
+			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, t.file_id, t.created_at, f.path as image_path, f.mime_type as mimetype from posts t left join files f on t.file_id = f.id where t.id = ?'),
+			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
 			insertPost : this.db.prepare('insert into posts (board_id, parent_id, username, content, file_id, created_at) values (?,?,?,?,?,?)')
 		}
 	}

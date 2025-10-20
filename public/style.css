@@ -76,6 +76,9 @@ button,input, textarea{
 
 .postFooter {
 	padding-top: 8px;
+	&>*{
+		margin-right: 4px;
+	}
 }
 
 

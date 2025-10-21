@@ -7,7 +7,7 @@
 			IndiaChan.Gay
 			{% endblock %}
 		</title>
-		<base href="/">
+		<base href="">
 		<meta charset="UTF-8">
 		<meta name="description" content="IndiaChan - Fast, anonymous, ephemeral, minimally censored, and meme-friendly.">
 		<meta name="keywords" content="IndiaChan, BharatChan, chan, india, indian, bharat">
@@ -22,7 +22,7 @@
 			{% if not index %}
 			<nav class="navLinks ">
 				<ul class="textCenter">
-					<li><a href="">main</a></li>
+					<li><a href="/">main</a></li>
 					{% for board in boards %}
 					<li><a href="/board/{{board.name}}">/{{board.name}}/</a></li>
 					{% else %}
@@ -43,6 +43,11 @@
 		{% block script %}
 			
 		{% endblock %}
+
+		<!-- <marquee style="position: fixed; bottom: 0;">
+			<a href="google.com">this is a long text that i want to share with each one </a>
+			<a href="google.com">of you and not with anyone else because it will be very bad for everyone</a>
+		</marquee> -->
 
 	</body>
 

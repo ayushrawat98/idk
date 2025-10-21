@@ -20,7 +20,8 @@ nunjucksEnv.addFilter('indianDate', (str) => {
 
 nunjucksEnv.addFilter('greenText', (str) => {
 	let regex = /^(>(?!>).*?)$/gm
-	return str.replace(regex, "<span style='color:green'>$1</span>")
+	let regexTwo = />>(\d+)/gm
+	return str.replace(regex, "<span style='color:green'>$1</span>").replace(regexTwo, "<a data-post-number='$1' href='#$1'>&gt;&gt;$1</a>")
 })
 
 //only in test url

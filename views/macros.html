@@ -20,7 +20,7 @@
 
 {% macro post(data, board) %}
 
-	<article class="post">
+	<article class="post" id="{{data.id}}">
 		<header>
 			<h3>{{data.title}}</h3>
 		</header>
@@ -37,7 +37,7 @@
 		<footer class="postFooter">
 			{% if board %}
 				<span>{{data.reply_count}} replies</span>
-				<a href="board/{{board.name}}/thread/{{data.id}}">View</a>
+				<a href="/board/{{board.name}}/thread/{{data.id}}">View</a>
 				<br>
 			{% endif %}
 			<span>~{{data.username}}</span>

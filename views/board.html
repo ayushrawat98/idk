@@ -52,7 +52,7 @@
 		}))
 		let offsetX = 0, offsetY = 0, isDragging = false;
 		dragHeader.style.cursor = 'move';
-		dragHeader.addEventListener('mousedown', (e) => {
+		dragHeader.addEventListener('pointerdown', (e) => {
 			isDragging = true;
 			// Record where you clicked
 			offsetX = e.clientX - newPostWindow.offsetLeft;
@@ -60,14 +60,14 @@
 			dragHeader.style.cursor = 'grabbing';
 		});
 
-		document.addEventListener('mousemove', (e) => {
+		document.addEventListener('pointermove', (e) => {
 			if (!isDragging) return;
 			// Move the element
 			newPostWindow.style.left = e.clientX - offsetX + 'px';
 			newPostWindow.style.top = e.clientY - offsetY + 'px';
 		});
 
-		dragHeader.addEventListener('mouseup', () => {
+		dragHeader.addEventListener('pointerup', () => {
 			isDragging = false;
 			dragHeader.style.cursor = 'move';
 		});

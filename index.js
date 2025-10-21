@@ -18,6 +18,11 @@ nunjucksEnv.addFilter('indianDate', (str) => {
 	return t.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
 })
 
+nunjucksEnv.addFilter('greenText', (str) => {
+	let regex = /^(>(?!>).*?)$/gm
+	return str.replace(regex, "<span style='color:green'>$1</span>")
+})
+
 //only in test url
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);

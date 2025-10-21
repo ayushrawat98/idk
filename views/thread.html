@@ -9,7 +9,7 @@
 	{{ macros.postList(datalist) }}
 
 	<div class="newPostWindow" hidden="true" >
-		<div id="dragHeader"></div>
+		<div id="dragHeader textCenter">DRAG</div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -17,7 +17,7 @@
 			<br>
 			<label for="content">Content :</label>
 			<br>
-			<textarea rows="8" cols="38" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
+			<textarea rows="8" cols="40" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
 			<br>
 			<label for="file">File :</label>
 			<br>
@@ -84,5 +84,25 @@
 			isDragging = false;
 			dragHeader.style.cursor = 'move';
 		});
+
+		dragHeader.addEventListener('touchstart', (ee) => {
+			isDragging = true;
+			var e = ee.targetTouches[0];
+			// Record where you clicked
+			offsetX = e.pageX - newPostWindow.offsetLeft;
+			offsetY = e.pageY - newPostWindow.offsetTop;
+		});
+
+		dragHeader.addEventListener('touchmove', (e) => {
+			if (!isDragging) return;
+			 var touchLocation = e.targetTouches[0];
+				newPostWindow.style.left = touchLocation.pageX  - offsetX + 'px';
+				newPostWindow.style.top = touchLocation.pageY - offsetY  + 'px';
+		});
+
+		dragHeader.addEventListener('touchend', () => {
+			isDragging = false;
+		});
+
 	</script>
 {% endblock %}

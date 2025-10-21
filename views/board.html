@@ -14,7 +14,7 @@
 	</div>
 
 	<div class="newPostWindow" hidden="true" >
-		<div id="dragHeader"></div>
+		<div id="dragHeader textCenter">DRAG</div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -26,7 +26,7 @@
 			<br>
 			<label for="content">Content :</label>
 			<br>
-			<textarea rows="8" cols="38" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
+			<textarea rows="8" cols="40" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
 			<br>
 			<label for="file">File :</label>
 			<br>
@@ -52,7 +52,7 @@
 		}))
 		let offsetX = 0, offsetY = 0, isDragging = false;
 		dragHeader.style.cursor = 'move';
-		dragHeader.addEventListener('pointerdown', (e) => {
+		dragHeader.addEventListener('mousedown', (e) => {
 			isDragging = true;
 			// Record where you clicked
 			offsetX = e.clientX - newPostWindow.offsetLeft;
@@ -60,16 +60,36 @@
 			dragHeader.style.cursor = 'grabbing';
 		});
 
-		document.addEventListener('pointermove', (e) => {
+		document.addEventListener('mousemove', (e) => {
 			if (!isDragging) return;
 			// Move the element
 			newPostWindow.style.left = e.clientX - offsetX + 'px';
 			newPostWindow.style.top = e.clientY - offsetY + 'px';
 		});
 
-		dragHeader.addEventListener('pointerup', () => {
+		dragHeader.addEventListener('mouseup', () => {
 			isDragging = false;
 			dragHeader.style.cursor = 'move';
 		});
+
+		dragHeader.addEventListener('touchstart', (ee) => {
+			isDragging = true;
+			var e = ee.targetTouches[0];
+			// Record where you clicked
+			offsetX = e.pageX - newPostWindow.offsetLeft;
+			offsetY = e.pageY - newPostWindow.offsetTop;
+		});
+
+		dragHeader.addEventListener('touchmove', (e) => {
+			if (!isDragging) return;
+			 var touchLocation = e.targetTouches[0];
+				newPostWindow.style.left = touchLocation.pageX  - offsetX + 'px';
+				newPostWindow.style.top = touchLocation.pageY - offsetY  + 'px';
+		});
+
+		dragHeader.addEventListener('touchend', () => {
+			isDragging = false;
+		});
+
 	</script>
 {% endblock %}

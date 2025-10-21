@@ -3,6 +3,7 @@
 	margin: 0;
 	box-sizing: border-box;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	line-height: 1.4;
 }
 
 main {
@@ -68,7 +69,7 @@ button,input, textarea{
 	.fullsizeMedia{
 		max-width: 50%;
 		max-height: 90vh;
-		object-fit: cover;
+		/* object-fit: cover; */
 	}
 
 	p {

@@ -33,7 +33,7 @@
 				<img class="thumbnail" src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/>
 			{% endif %}
 		{% endif %}
-		<p>{{data.content}}</p>
+		<p>{{data.content | greenText | safe}}</p>
 		<footer class="postFooter">
 			{% if board %}
 				<span>{{data.reply_count}} replies</span>

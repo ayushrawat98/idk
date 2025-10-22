@@ -12,10 +12,10 @@ function broadcastUserCount() {
 	})
 }
 
-wss.on('connection', () =>{
+wss.on('connection', (ws) =>{
 	console.log("connected")
 	broadcastUserCount()
-	wss.on('close', () => {
+	ws.on('close', () => {
 		broadcastUserCount()
 		console.log("closed")
 	})

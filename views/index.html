@@ -15,7 +15,7 @@
 	<section class="indexImages">
 		<h3>Recent images</h3>
 		{% for image in images %}
-		<img src="/public/files/{{image.path}}" alt="image.path" height="100" width="100"/>
+		<img src="/public/files/{{image.path}}" alt="{{image.path}}" height="100" width="100"/>
 		{% else %}
 		<p>No images :&lt;</p>
 		{% endfor %}

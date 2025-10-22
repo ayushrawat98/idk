@@ -90,7 +90,7 @@
 		dragHeader.addEventListener('touchend', () => {
 			isDragging = false;
 		});
-
+		
 		const ws = new WebSocket('wss://indiachan.gay/ws')
 		ws.addEventListener('message', (e) => console.log(e.data))
 

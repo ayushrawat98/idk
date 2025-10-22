@@ -1,6 +1,6 @@
-import WebSocket from "ws";
+import {WebSocketServer} from "ws"
 
-const wss = new WebSocket.Server({port : 8080, path : "/ws"})
+const wss = new WebSocketServer({port : 8080, path : "/ws"})
 
 function broadcastUserCount() {
 	const count = wss.clients.size

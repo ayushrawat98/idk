@@ -56,6 +56,7 @@ button,input, textarea{
 	border-radius: 4px;
 	width: fit-content;
 	padding: 12px;
+	
 
 	header{
 		margin-bottom: 8px;
@@ -74,6 +75,7 @@ button,input, textarea{
 
 	p {
 		white-space: pre-wrap;
+		word-wrap: break-word;
 	}
 
 	p::after {

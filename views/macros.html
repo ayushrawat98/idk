@@ -27,10 +27,10 @@
 		{% if data.image_path %}
 			{% if "video" in data.mimetype %}
 				<video class="fullsizeMedia" src="/public/files/{{data.image_path}}" controls preload="none" hidden ></video>
-				<img class="thumbnail" src="/public/thumbnails/{{data.image_path}}.png" height="100" width="100" loading="lazy"/>
+				<img class="thumbnail" src="/public/thumbnails/{{data.image_path}}.png" alt="{{data.image_path}}" height="100" width="100" loading="lazy"/>
 			{% else %}
-				<img class="fullsizeMedia" src="/public/files/{{data.image_path}}" loading="lazy"  hidden/>
-				<img class="thumbnail" src="/public/files/{{data.image_path}}" height="100" width="100" loading="lazy"/>
+				<img class="fullsizeMedia" src="/public/files/{{data.image_path}}" alt="{{data.image_path}}" loading="lazy"  hidden/>
+				<img class="thumbnail" src="/public/files/{{data.image_path}}" alt="{{data.image_path}}" height="100" width="100" loading="lazy"/>
 			{% endif %}
 		{% endif %}
 		<p>{{data.content | greenText | urlize | safe}}</p>

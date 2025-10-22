@@ -9,7 +9,7 @@
 	{{ macros.postList(datalist) }}
 
 	<div class="newPostWindow" hidden="true" >
-		<div id="dragHeader" class="textCenter">DRAG</div>
+		<div id="dragHeader"></div>
 		<form method="post" enctype="multipart/form-data">
 			<label for="name">Name :</label>
 			<br>
@@ -108,7 +108,7 @@
 		//for showing popup on >>123 click
 		const link = document.querySelectorAll('[data-post-number-link]')
 		link.forEach(l => {
-			l.addEventListener('click', (e) => {debugger
+			l.addEventListener('click', (e) => {
 				e.preventDefault()
 				e.stopPropagation()
 				const targetId = l.getAttribute('data-post-number-link')
@@ -140,7 +140,7 @@
 
 		const ws = new WebSocket('wss://indiachan.gay/ws')
 		ws.addEventListener('message', (e) => {
-			console.log(e.data)
+			// console.log(e.data)
 			// let t = document.getElementById("userOnline")
 			// t.textContent = "-" + e.data
 		})

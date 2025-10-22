@@ -117,3 +117,7 @@ button,input, textarea{
 		}
 	}
 }
+
+#userOnline{
+	font-size: 10px;
+}

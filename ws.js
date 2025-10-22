@@ -1,4 +1,5 @@
 import {WebSocketServer} from "ws"
+import WebSocket from "ws"
 
 const wss = new WebSocketServer({port : 8080, path : "/ws"})
 

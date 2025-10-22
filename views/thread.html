@@ -104,5 +104,38 @@
 			isDragging = false;
 		});
 
+
+		//for showing popup on >>123 click
+		const link = document.querySelectorAll('[data-post-number-link]')
+		link.forEach(l => {
+			l.addEventListener('click', (e) => {debugger
+				e.preventDefault()
+				e.stopPropagation()
+				const targetId = l.getAttribute('data-post-number-link')
+				const targetElement = document.getElementById(targetId)
+				//if no target element or popup already present , return
+				if(!targetElement || document.getElementById('mousePopup')){
+					return;
+				}
+				const popup = targetElement.cloneNode(true)
+				popup.removeAttribute('id')
+				popup.id = 'mousePopup'
+				popup.style.position = 'fixed'
+				popup.style.zIndex = '3'
+				popup.style.backgroundColor = 'whitesmoke'
+				popup.style.left = '10px'
+				popup.style.top = (e.clientY - targetElement.offsetHeight - 10) + 'px'
+				popup.addEventListener('click', (e) => e.stopPropagation())
+
+				document.body.appendChild(popup)
+			})
+		})
+
+		document.body.addEventListener('click', (e) => {
+			const popup = document.getElementById('mousePopup')
+			if(popup){
+				popup.remove()
+			}
+		})
 	</script>
 {% endblock %}

@@ -17,21 +17,8 @@ route.get('/', async (req, res, next) => {
 	return res.render('index.html', {boards : boardsList, title : 'IndiaChan', images : recentImages , index : true});
 })
 
-route.delete('/:threadId', async (req, res, next) => {
-	if(req.query.key != '1'){
-		return res.end()
-	}
-	const temp = instance.getThreadForPost(req.params.threadId)
-	const tempfile = instance.getFile(temp.file_id)
-	instance.db.prepare('delete from posts where id=?').run(req.params.threadId)
-	instance.db.prepare('delete from files where id=?').run(temp.file_id)
-	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
-	fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => {})
-	if(tempfile.mime_type.includes("video")){
-		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path+".png"), () => {})
-	}
-	return res.send("done")
-})
+
+//-----BOARDS------
 
 route.get('/board/:boardName', async (req, res, next) => {
 	const boardsList = instance.getBoards()
@@ -69,6 +56,8 @@ route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, re
 	const newThread = instance.insertThread(obj)
 	return res.redirect('/board/'+ req.params.boardName)
 })
+
+//-----THREADS-----
 
 route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	const boardsList = instance.getBoards()
@@ -115,6 +104,38 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbn
 	instance.updateThread(new Date().toISOString(), req.params.threadName)
 	
 	return res.redirect('/board/'+ req.params.boardName + '/thread/' + req.params.threadName)
+})
+
+
+//-------DELETE-------
+
+function deleteThreadAndFile(threadId){
+	const temp = instance.getThreadForPost(threadId)
+	const tempfile = instance.getFile(temp.file_id)
+	instance.db.prepare('delete from posts where id=?').run(threadId)
+	instance.db.prepare('delete from files where id=?').run(temp.file_id)
+	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
+	fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => {})
+	if(tempfile.mime_type.includes("video")){
+		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path+".png"), () => {})
+	}
+	// console.log(threadId , "deleted")
+}
+
+route.get('cleanup/:threadId', async (req, res, next) => {
+	if(req.query.key != '1'){
+		return res.end()
+	}
+	deleteThreadAndFile(req.params.threadId, )
+	return res.send("done")
+})
+
+route.get('/cleanup', async(req, res, next) => {
+	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null order by updated_at desc limit -1 offset 100').all()
+	for(let thread of allThreadsToDelete){
+		deleteThreadAndFile(thread.id)
+	}
+	res.send("done")
 })
 
 

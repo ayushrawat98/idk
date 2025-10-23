@@ -34,6 +34,9 @@ route.get('/board/:boardName', async (req, res, next) => {
 })
 
 route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
+	if(req.body.content.trim().length == 0){
+		return res.end()
+	}
 	//redirect to newly created thread with the id
 	//insert file
 	let fileObj = {
@@ -75,6 +78,10 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 
 route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail,  async (req, res, next) => {
 
+	if(req.body.content.trim().length == 0){
+		return res.end()
+	}
+	
 	let newFile = undefined
 
 	if(req.file){

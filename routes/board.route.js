@@ -99,10 +99,10 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbn
 		created_at : new Date().toISOString(),
 		updated_at : new Date().toISOString()
 	}
-
 	instance.insertPost(obj)
-	instance.updateThread(new Date().toISOString(), req.params.threadName)
-	
+	if(!req.body.sage){
+		instance.updateThread(new Date().toISOString(), req.params.threadName)
+	}
 	return res.redirect('/board/'+ req.params.boardName + '/thread/' + req.params.threadName)
 })
 

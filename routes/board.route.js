@@ -122,7 +122,7 @@ function deleteThreadAndFile(threadId){
 	// console.log(threadId , "deleted")
 }
 
-route.get('cleanup/:threadId', async (req, res, next) => {
+route.get('/cleanup/:threadId', async (req, res, next) => {
 	if(req.query.key != '1'){
 		return res.end()
 	}

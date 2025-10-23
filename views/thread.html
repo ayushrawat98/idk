@@ -2,7 +2,9 @@
 {% import "macros.html" as macros %}
 
 {% block title %}
-	1234 - Replace it with title or some description
+	{{datalist[0].title}}
+	{% if datalist[0].title %}-{% endif %}
+	{{datalist[0].content}}
 {% endblock %}
 
 {% block main %}

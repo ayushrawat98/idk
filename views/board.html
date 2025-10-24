@@ -75,9 +75,9 @@
 		const dragHeader = document.getElementById('dragHeader')
 		let static = document.querySelector('.static')
 
-		window.onload = () => {
+		document.addEventListener('DOMContentLoaded', function() {
 			static.setAttribute('hidden', 'true')
-		}
+		})
 
 		newPostButton.forEach(element => element.addEventListener('click', () => {
 			newPostWindow.toggleAttribute('hidden')

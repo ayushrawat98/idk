@@ -71,9 +71,9 @@
 		const thumbnails = document.querySelectorAll(".thumbnail")
 		let static = document.querySelector('.static')
 
-		window.onload = () => {
+		document.addEventListener('DOMContentLoaded', function() {
 			static.setAttribute('hidden', 'true')
-		}
+		})
 
 		thumbnails.forEach(thumbnail => thumbnail.addEventListener('click', ()=>{
 			let temp = thumbnail.parentElement.querySelector('.fullsizeMedia')

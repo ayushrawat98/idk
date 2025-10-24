@@ -13,6 +13,32 @@
 		<button class="newPostButton">create new post</button>
 	</div>
 
+	<div class="static" >
+		<div id="dragHeaderStatic"></div>
+		<form method="post" enctype="multipart/form-data">
+			<label for="name">Name :</label>
+			<br>
+			<input type="text" id="name" name="name" placeholder="Anonymous"/>
+			<br>
+			<label for="title">Title :</label>
+			<br>
+			<input type="text" id="title" name="title" placeholder="Title"/>
+			<br>
+			<label for="content">Content :</label>
+			<br>
+			<textarea rows="8" cols="40" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
+			<br>
+			<label for="file">File :</label>
+			<br>
+			<input type="file" id="file" name="file" placeholder="file" accept="image/*, video/*" required/>
+			<br><br>
+			<button type="submit">Submit</button>
+			<button type="reset">Reset</button>
+		</form>
+	</div>
+
+	{{ macros.postList(datalist, board) }}
+
 	<div class="newPostWindow" hidden="true" >
 		<div id="dragHeader"></div>
 		<form method="post" enctype="multipart/form-data">
@@ -38,8 +64,6 @@
 		</form>
 	</div>
 
-	{{ macros.postList(datalist, board) }}
-
 	<br>
 
 {% endblock %}
@@ -49,6 +73,12 @@
 		let newPostButton = document.querySelectorAll('.newPostButton')
 		let newPostWindow = document.querySelector('.newPostWindow')
 		const dragHeader = document.getElementById('dragHeader')
+		let static = document.querySelector('.static')
+
+		window.onload = () => {
+			static.setAttribute('hidden', 'true')
+		}
+
 		newPostButton.forEach(element => element.addEventListener('click', () => {
 			newPostWindow.toggleAttribute('hidden')
 		}))

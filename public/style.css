@@ -111,6 +111,17 @@ button,input, textarea{
 	}
 }
 
+.static{
+	position: static;
+	background-color: whitesmoke;
+	padding: 0px 12px 12px;
+	border: 1px solid black;
+	#dragHeaderStatic{
+		height: 20px;
+		background-color: rgb(186, 184, 184);
+	}
+}
+
 @media (max-width:768px) {
 	.post{
 		width: 100%;

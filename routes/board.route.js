@@ -5,6 +5,7 @@ import fs from "fs"
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { thumbnail } from '../lib/thumbnail.js';
+import nodeIpgeoblock from 'node-ipgeoblock';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,7 +34,7 @@ route.get('/board/:boardName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName', nodeIpgeoblock({geolite2: "./../public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
 	if(req.body.content.trim().length == 0){
 		return res.end()
 	}
@@ -76,7 +77,7 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail,  async (req, res, next) => {
+route.post('/board/:boardName/thread/:threadName',nodeIpgeoblock({geolite2: "./../public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail,  async (req, res, next) => {
 
 	if(req.body.content.trim().length == 0){
 		return res.end()

@@ -9,29 +9,6 @@
 
 {% block main %}
 
-	<div class="static" >
-		<div id="dragHeaderStatic"></div>
-		<form method="post" enctype="multipart/form-data">
-			<label for="name">Name :</label>
-			<br>
-			<input type="text" id="name" name="name" placeholder="Anonymous"/>
-			<br>
-			<label for="content">Content :</label>
-			<br>
-			<textarea rows="8" cols="40" placeholder="Whats in your mind..." id="content" name="content" required></textarea>
-			<br>
-			<label for="file">File :</label>
-			<br>
-			<input type="file" id="file" name="file" placeholder="file" accept="image/*,video/*"/>
-			<div style="margin: 8px 0px;">
-			<label for="sage">Sage : </label><input type="checkbox" id="sage" name="sage" style="vertical-align: middle;"/>
-			</div>
-			<button type="submit">Submit</button>
-			<button type="reset">Reset</button>
-			<button type="button" class="closeButton">Close</button>
-		</form>
-	</div>
-
 	{{ macros.postList(datalist) }}
 
 	<div class="newPostWindow" hidden="true" >
@@ -69,11 +46,7 @@
 		const textbox = document.getElementById('content')
 		const closeButton = document.querySelector(".closeButton")
 		const thumbnails = document.querySelectorAll(".thumbnail")
-		let static = document.querySelector('.static')
-
-		document.addEventListener('DOMContentLoaded', function() {
-			static.setAttribute('hidden', 'true')
-		})
+		
 
 		thumbnails.forEach(thumbnail => thumbnail.addEventListener('click', ()=>{
 			let temp = thumbnail.parentElement.querySelector('.fullsizeMedia')

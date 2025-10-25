@@ -119,6 +119,10 @@
 			l.addEventListener('click', (e) => {
 				e.preventDefault()
 				e.stopPropagation()
+				const oldpopup = document.getElementById('mousePopup')
+				if(oldpopup){
+					oldpopup.remove()
+				}
 				const targetId = l.getAttribute('data-post-number-link')
 				const targetElement = document.getElementById(targetId)
 				//if no target element or popup already present , return

@@ -33,8 +33,8 @@ route.get('/board/:boardName', async (req, res, next) => {
 		datalist: threadsList
 	});
 })
-
-route.post('/board/:boardName', nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
+// nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
+route.post('/board/:boardName',  upload.single("file"), thumbnail, async (req, res, next) => {
 	if(req.body.content.trim().length == 0){
 		return res.end()
 	}
@@ -77,7 +77,7 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName/thread/:threadName',nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail,  async (req, res, next) => {
+route.post('/board/:boardName/thread/:threadName'. upload.single("file"), thumbnail,  async (req, res, next) => {
 
 	if(req.body.content.trim().length == 0){
 		return res.end()

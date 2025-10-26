@@ -151,10 +151,29 @@
 		})
 
 		const ws = new WebSocket('wss://indiachan.gay/ws')
-		ws.addEventListener('message', (e) => {
-			// console.log(e.data)
-			// let t = document.getElementById("userOnline")
-			// t.textContent = "-" + e.data
-		})
+		
+
+		 const pasteTextBox = document.getElementById('content');
+    const imageFileInput = document.getElementById('file');
+
+    pasteTextBox.addEventListener('paste', (event) => {
+        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+        let imageFile = null;
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.startsWith('image/')) {
+                imageFile = items[i].getAsFile();
+                break; // Assuming only one image per paste
+            }
+        }
+
+        if (imageFile) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(imageFile);
+            imageFileInput.files = dataTransfer.files;
+            // Prevent default paste behavior in the textbox if desired
+            event.preventDefault(); 
+        }
+    });
 	</script>
 {% endblock %}

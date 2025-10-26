@@ -15,7 +15,7 @@ const route = express.Router()
 route.get('/', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const recentImages = instance.getRecentImages()
-	return res.render('index.html', {boards : boardsList, title : 'IndiaChan', images : recentImages , index : true});
+	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true });
 })
 
 
@@ -34,31 +34,34 @@ route.get('/board/:boardName', async (req, res, next) => {
 	});
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
-route.post('/board/:boardName',  upload.single("file"), thumbnail, async (req, res, next) => {
-	if(req.body.content.trim().length == 0){
+route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
+	if (req.body.content.trim().length == 0) {
 		return res.end()
 	}
-	//redirect to newly created thread with the id
-	//insert file
-	let fileObj = {
-		path : req.file.filename,
-		thumbnail_path : req.file.filename,
-		mime_type : req.file.mimetype,
-		created_at : new Date().toISOString()
+	let newFile = undefined
+	if (req.file) {
+		let fileObj = {
+			path: req.file.filename,
+			thumbnail_path: req.file.filename,
+			mime_type: req.file.mimetype,
+			created_at: new Date().toISOString()
+		}
+		newFile = instance.insertFile(fileObj)
 	}
-	const newFile = instance.insertFile(fileObj)
+	//insert file
+
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0].id
 	let obj = {
-		board_id : boardId,
-		username : req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
-		title : req.body.title,
-		content : req.body.content,
-		op_file_id : newFile.lastInsertRowid,
-		created_at : new Date().toISOString(),
-		updated_at : new Date().toISOString()
+		board_id: boardId,
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
+		title: req.body.title.trim(),
+		content: req.body.content.trim(),
+		op_file_id: newFile?.lastInsertRowid ?? null,
+		created_at: new Date().toISOString(),
+		updated_at: new Date().toISOString()
 	}
 	const newThread = instance.insertThread(obj)
-	return res.redirect('/board/'+ req.params.boardName)
+	return res.redirect('/board/' + req.params.boardName)
 })
 
 //-----THREADS-----
@@ -77,70 +80,87 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail,  async (req, res, next) => {
+route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail, async (req, res, next) => {
 
-	if(req.body.content.trim().length == 0){
+	if (req.body.content.trim().length == 0) {
 		return res.end()
 	}
-	
+
 	let newFile = undefined
 
-	if(req.file){
+	if (req.file) {
 		let fileObj = {
-			path : req.file.filename,
-			thumbnail_path : req.file.filename,
-			mime_type : req.file.mimetype,
-			created_at : new Date().toISOString()
+			path: req.file.filename,
+			thumbnail_path: req.file.filename,
+			mime_type: req.file.mimetype,
+			created_at: new Date().toISOString()
 		}
 		newFile = instance.insertFile(fileObj)
 	}
-	
+
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
 
 	let obj = {
-		board_id : currentBoard.id,
-		parent_id : req.params.threadName,
-		username : req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
-		content : req.body.content,
-		file_id : newFile?.lastInsertRowid ?? null,
-		created_at : new Date().toISOString(),
-		updated_at : new Date().toISOString()
+		board_id: currentBoard.id,
+		parent_id: req.params.threadName,
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
+		content: req.body.content.trim(),
+		file_id: newFile?.lastInsertRowid ?? null,
+		created_at: new Date().toISOString(),
+		updated_at: new Date().toISOString()
 	}
 	instance.insertPost(obj)
-	if(!req.body.sage){
+	if (!req.body.sage) {
 		instance.updateThread(new Date().toISOString(), req.params.threadName)
 	}
-	return res.redirect('/board/'+ req.params.boardName + '/thread/' + req.params.threadName)
+	return res.redirect('/board/' + req.params.boardName + '/thread/' + req.params.threadName)
+})
+
+
+//-------index image click--------
+
+route.get('/goto/:imageId', async (req, res, next) => {
+	const imageId = req.params.imageId
+	const relevantThread = instance.db.prepare('select * from posts where file_id = ?').get(imageId)
+	const boardName = instance.getBoards().filter(board => board.id == relevantThread.board_id)[0]?.name
+	if(relevantThread && relevantThread.parent_id != null){
+		return res.redirect('/board/'+boardName+'/thread/'+relevantThread.parent_id)
+	}else if(relevantThread && relevantThread.parent_id == null){
+		return res.redirect('/board/'+boardName+'/thread/'+relevantThread.id)
+	}else{
+		res.end("404")
+	}
+	
 })
 
 
 //-------DELETE-------
 
-function deleteThreadAndFile(threadId){
+function deleteThreadAndFile(threadId) {
 	const temp = instance.getThreadForPost(threadId)
 	const tempfile = instance.getFile(temp.file_id)
 	instance.db.prepare('delete from posts where id=?').run(threadId)
 	instance.db.prepare('delete from files where id=?').run(temp.file_id)
 	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
-	fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => {})
-	if(tempfile.mime_type.includes("video")){
-		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path+".png"), () => {})
+	fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => { })
+	if (tempfile.mime_type.includes("video")) {
+		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path + ".png"), () => { })
 	}
 	// console.log(threadId , "deleted")
 }
 
 route.get('/cleanup/:threadId', async (req, res, next) => {
-	if(req.query.key != '1'){
+	if (req.query.key != '1') {
 		return res.end()
 	}
-	deleteThreadAndFile(req.params.threadId, )
+	deleteThreadAndFile(req.params.threadId,)
 	return res.send("done")
 })
 
-route.get('/cleanup', async(req, res, next) => {
+route.get('/cleanup', async (req, res, next) => {
 	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 100').all()
-	for(let thread of allThreadsToDelete){
+	for (let thread of allThreadsToDelete) {
 		deleteThreadAndFile(thread.id)
 	}
 	res.send("done")

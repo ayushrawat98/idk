@@ -32,7 +32,7 @@
 			<br>
 			<label for="file">File :</label>
 			<br>
-			<input type="file" id="file" name="file" placeholder="file" accept="image/*, video/*" required/>
+			<input type="file" id="file" name="file" placeholder="file" accept="image/*, video/*"/>
 			<br><br>
 			<button type="submit">Submit</button>
 			<button type="reset">Reset</button>
@@ -101,8 +101,31 @@
 			let t = document.getElementById("userOnline")
 			t.textContent = e.data
 		})
-		// ws.addEventListener('open', (e) => console.log('connected'))
-		// ws.addEventListener('close', (e) => console.log('closed'))
+		
+
+		//copt pasting code
+		 const pasteTextBox = document.getElementById('content');
+    const imageFileInput = document.getElementById('file');
+
+    pasteTextBox.addEventListener('paste', (event) => {
+        const items = (event.clipboardData || event.originalEvent.clipboardData).items;
+        let imageFile = null;
+
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].type.startsWith('image/')) {
+                imageFile = items[i].getAsFile();
+                break; // Assuming only one image per paste
+            }
+        }
+
+        if (imageFile) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(imageFile);
+            imageFileInput.files = dataTransfer.files;
+            // Prevent default paste behavior in the textbox if desired
+            event.preventDefault(); 
+        }
+    });
 
 	</script>
 {% endblock %}

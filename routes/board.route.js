@@ -39,16 +39,16 @@ route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, re
 	if (req.body.content.trim().length == 0) {
 		return res.end()
 	}
-	let newFile = undefined
-	if (req.file) {
+	// let newFile = undefined
+	// if (req.file) {
 		let fileObj = {
 			path: req.file.filename,
 			thumbnail_path: req.file.filename,
 			mime_type: req.file.mimetype,
 			created_at: new Date().toISOString()
 		}
-		newFile = instance.insertFile(fileObj)
-	}
+		const newFile = instance.insertFile(fileObj)
+	// }
 	//insert file
 
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0].id

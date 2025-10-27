@@ -20,7 +20,12 @@
 		<p>No images :&lt;</p>
 		{% endfor %}
 	</section>
-	<img style="max-width: 350px; margin: auto;" src="/public/images/pyaari_in_saari.png" alt="pyaari in sari" />
+	{% if "video" in randomFile.mime_type %}
+		<video style="max-width: 350px; margin: auto;" src="/public/files/{{randomFile.path}}" controls autoplay ></video>
+	{% else %}
+		<img style="max-width: 350px; margin: auto;" src="/public/files/{{randomFile.path}}" alt="{{randomFile.path}}" />
+	{% endif %}
+	
 	
 	<br>
 	

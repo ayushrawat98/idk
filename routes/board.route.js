@@ -15,7 +15,8 @@ const route = express.Router()
 route.get('/', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const recentImages = instance.getRecentImages()
-	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true });
+	const randomFile = instance.getRandomFile()
+	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true, randomFile : randomFile});
 })
 
 
@@ -143,10 +144,10 @@ function deleteThreadAndFile(threadId) {
 	instance.db.prepare('delete from posts where id=?').run(threadId)
 	instance.db.prepare('delete from files where id=?').run(temp.file_id)
 	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
-	if(tempfile.path && tempfile.path.trim().length > 0){
+	if(tempfile && tempfile.path.trim().length > 0){
 		fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => { })
 	}
-	if (tempfile.mime_type.includes("video")) {
+	if (tempfile && tempfile.mime_type.includes("video")) {
 		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path + ".png"), () => { })
 	}
 	// console.log(threadId , "deleted")

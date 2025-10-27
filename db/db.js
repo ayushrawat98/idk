@@ -66,7 +66,7 @@ class DB {
 			getFile : this.db.prepare('select * from files where id = ?'),
 			
 			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, t.file_id, t.created_at, f.path as image_path, f.mime_type as mimetype from posts t left join files f on t.file_id = f.id where t.id = ?'),
-			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
+			getPosts : this.db.prepare('select p.id, p.parent_id, p.username, p.content, p.created_at, p.file_id, f.path as image_path, f.mime_type as mimetype from posts p left join files f on p.file_id = f.id where p.parent_id = ?'),
 			insertPost : this.db.prepare('insert into posts (board_id, parent_id, username, content, file_id, created_at) values (?,?,?,?,?,?)'),
 
 			getRandomFile : this.db.prepare('SELECT * FROM files ORDER BY RANDOM() LIMIT 1')

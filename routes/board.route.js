@@ -16,7 +16,7 @@ route.get('/', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const recentImages = instance.getRecentImages()
 	const randomFile = instance.getRandomFile()
-	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true, randomFile : randomFile});
+	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true, randomFile: randomFile });
 })
 
 
@@ -125,14 +125,14 @@ route.get('/goto/:imageId', async (req, res, next) => {
 	const imageId = req.params.imageId
 	const relevantThread = instance.db.prepare('select * from posts where file_id = ?').get(imageId)
 	const boardName = instance.getBoards().filter(board => board.id == relevantThread.board_id)[0]?.name
-	if(relevantThread && relevantThread.parent_id != null){
-		return res.redirect('/board/'+boardName+'/thread/'+relevantThread.parent_id)
-	}else if(relevantThread && relevantThread.parent_id == null){
-		return res.redirect('/board/'+boardName+'/thread/'+relevantThread.id)
-	}else{
+	if (relevantThread && relevantThread.parent_id != null) {
+		return res.redirect('/board/' + boardName + '/thread/' + relevantThread.parent_id)
+	} else if (relevantThread && relevantThread.parent_id == null) {
+		return res.redirect('/board/' + boardName + '/thread/' + relevantThread.id)
+	} else {
 		res.end("404")
 	}
-	
+
 })
 
 
@@ -141,10 +141,28 @@ route.get('/goto/:imageId', async (req, res, next) => {
 function deleteThreadAndFile(threadId) {
 	const temp = instance.getThreadForPost(threadId)
 	const tempfile = instance.getFile(temp.file_id)
-	instance.db.prepare('delete from posts where id=?').run(threadId)
-	instance.db.prepare('delete from files where id=?').run(temp.file_id)
+	const tempReplies = instance.getPosts(threadId)
+	//delete main thread
+	const deleteThread = instance.db.prepare('delete from posts where id=?')
+	deleteThread.run(threadId)
+	//delete main thread file
+	const deleteFile = instance.db.prepare('delete from files where id=?')
+	deleteFile.run(temp.file_id)
+	//delete all replies
+	
+	for (let i = 0; i < tempReplies.length; ++i) {
+		deleteThread.run(tempReplies[i].id)
+		const tempfile2 = instance.getFile(tempReplies[i].file_id)
+		deleteFile.run(tempReplies[i].file_id)
+		if (tempfile2 && tempfile2.path.trim().length > 0) {
+			fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile2.path), () => { })
+		}
+		if (tempfile2 && tempfile2.mime_type.includes("video")) {
+			fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile2.path + ".png"), () => { })
+		}
+	}
 	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
-	if(tempfile && tempfile.path.trim().length > 0){
+	if (tempfile && tempfile.path.trim().length > 0) {
 		fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => { })
 	}
 	if (tempfile && tempfile.mime_type.includes("video")) {
@@ -162,7 +180,8 @@ route.get('/cleanup/:threadId', async (req, res, next) => {
 })
 
 route.get('/cleanup', async (req, res, next) => {
-	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 50').all()
+	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 0').all()
+	// console.log(instance.db.prepare('select * from files').all())
 	for (let thread of allThreadsToDelete) {
 		deleteThreadAndFile(thread.id)
 	}

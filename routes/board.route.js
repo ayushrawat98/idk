@@ -143,7 +143,9 @@ function deleteThreadAndFile(threadId) {
 	instance.db.prepare('delete from posts where id=?').run(threadId)
 	instance.db.prepare('delete from files where id=?').run(temp.file_id)
 	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
-	fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => { })
+	if(tempfile.path.trim().length > 0){
+		fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => { })
+	}
 	if (tempfile.mime_type.includes("video")) {
 		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path + ".png"), () => { })
 	}

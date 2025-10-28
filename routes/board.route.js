@@ -6,6 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { thumbnail } from '../lib/thumbnail.js';
 import nodeIpgeoblock from 'node-ipgeoblock';
+import DOMPurify from 'dompurify'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,7 +37,6 @@ route.get('/board/:boardName', async (req, res, next) => {
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
 route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
-	return
 	if (req.body.content.trim().length == 0) {
 		return res.end()
 	}
@@ -57,7 +57,7 @@ route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, re
 		board_id: boardId,
 		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
 		title: req.body.title.trim(),
-		content: req.body.content.trim(),
+		content: DOMPurify.sanitize(req.body.content.trim()),
 		op_file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()
@@ -83,7 +83,6 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 })
 
 route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail, async (req, res, next) => {
-	return
 
 	if (req.body.content.trim().length == 0) {
 		return res.end()
@@ -108,7 +107,7 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbn
 		board_id: currentBoard.id,
 		parent_id: req.params.threadName,
 		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
-		content: req.body.content.trim(),
+		content: DOMPurify.sanitize(req.body.content.trim()),
 		file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()

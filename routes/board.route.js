@@ -151,7 +151,7 @@ function deleteThreadAndFile(threadId) {
 	//delete all replies
 	
 	for (let i = 0; i < tempReplies.length; ++i) {
-		deleteThread.run(tempReplies[i].id)
+		// deleteThread.run(tempReplies[i].id) //not required as parent has on delete cascade
 		const tempfile2 = instance.getFile(tempReplies[i].file_id)
 		deleteFile.run(tempReplies[i].file_id)
 		if (tempfile2 && tempfile2.path.trim().length > 0) {
@@ -180,7 +180,7 @@ route.get('/cleanup/:threadId', async (req, res, next) => {
 })
 
 route.get('/cleanup', async (req, res, next) => {
-	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 50').all()
+	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 100').all()
 	// console.log(instance.db.prepare('select * from files').all())
 	for (let thread of allThreadsToDelete) {
 		deleteThreadAndFile(thread.id)

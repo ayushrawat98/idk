@@ -37,31 +37,32 @@ route.get('/board/:boardName', async (req, res, next) => {
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
 route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
-	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0].id
-	if(!boardId){
+	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0]?.id
+	if (!boardId) {
 		return res.end("Teri maa ki chut")
 	}
-	if (req.body.content.trim().length == 0) {
-		return res.end()
-	}
-	// let newFile = undefined
-	// if (req.file) {
-		let fileObj = {
-			path: req.file.filename,
-			thumbnail_path: req.file.filename,
-			mime_type: req.file.mimetype,
-			created_at: new Date().toISOString()
-		}
-		const newFile = instance.insertFile(fileObj)
-	// }
-	//insert file
+	const sanitizedText = DOMPurify.sanitize(req.body.content.trim(), {
+		ALLOWED_TAGS: [],
+		ALLOWED_ATTR: []
+	});
 
-	
+	if (sanitizedText.length == 0) {
+		return res.end("Teri maa ki chut")
+	}
+
+	let fileObj = {
+		path: req.file.filename,
+		thumbnail_path: req.file.filename,
+		mime_type: req.file.mimetype,
+		created_at: new Date().toISOString()
+	}
+	const newFile = instance.insertFile(fileObj)
+
 	let obj = {
 		board_id: boardId,
-		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
-		title: req.body.title.trim(),
-		content: DOMPurify.sanitize(req.body.content.trim()),
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0, 20),
+		title: req.body.title.trim().slice(0, 20),
+		content: sanitizedText,
 		op_file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()
@@ -92,13 +93,17 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbn
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
 	const threadExist = instance.getThreadForPost(req.params.threadName)
 
-	if(!currentBoard || !threadExist){
+	if (!currentBoard || !threadExist) {
 		return res.end("Teri maa ki chut")
 	}
 
+	const sanitizedText = DOMPurify.sanitize(req.body.content.trim(), {
+		ALLOWED_TAGS: [],
+		ALLOWED_ATTR: []
+	});
 
-	if (req.body.content.trim().length == 0) {
-		return res.end()
+	if (sanitizedText.length == 0) {
+		return res.end("Teri maa ki chut")
 	}
 
 	let newFile = undefined
@@ -116,8 +121,8 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbn
 	let obj = {
 		board_id: currentBoard.id,
 		parent_id: req.params.threadName,
-		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim(),
-		content: DOMPurify.sanitize(req.body.content.trim()),
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0,20),
+		content: sanitizedText,
 		file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()
@@ -160,7 +165,7 @@ function deleteThreadAndFile(threadId) {
 	const deleteFile = instance.db.prepare('delete from files where id=?')
 	deleteFile.run(temp.file_id)
 	//delete all replies
-	
+
 	for (let i = 0; i < tempReplies.length; ++i) {
 		// deleteThread.run(tempReplies[i].id) //not required as parent has on delete cascade
 		const tempfile2 = instance.getFile(tempReplies[i].file_id)

@@ -60,8 +60,8 @@ route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, re
 
 	let obj = {
 		board_id: boardId,
-		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0, 20),
-		title: req.body.title.trim().slice(0, 20),
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0, 255),
+		title: req.body.title.trim().slice(0, 255),
 		content: sanitizedText,
 		op_file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
@@ -121,7 +121,7 @@ route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbn
 	let obj = {
 		board_id: currentBoard.id,
 		parent_id: req.params.threadName,
-		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0,20),
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0,255),
 		content: sanitizedText,
 		file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),

@@ -6,7 +6,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { thumbnail } from '../lib/thumbnail.js';
 import nodeIpgeoblock from 'node-ipgeoblock';
-import DOMPurify from 'dompurify'
+import DOMPurify from "isomorphic-dompurify";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +37,7 @@ route.get('/board/:boardName', async (req, res, next) => {
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
 route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
+	
 	if (req.body.content.trim().length == 0) {
 		return res.end()
 	}

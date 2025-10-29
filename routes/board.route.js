@@ -90,7 +90,7 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 })
 
 let threadMap = {}
-route.post('/board/:boardName/thread/:threadName', ratelimit(5000, threadMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName/thread/:threadName', ratelimit(15000, threadMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
 
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]

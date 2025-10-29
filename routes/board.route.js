@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { thumbnail } from '../lib/thumbnail.js';
 import nodeIpgeoblock from 'node-ipgeoblock';
 import DOMPurify from "isomorphic-dompurify";
+import { ratelimit } from '../lib/ratelimit.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,7 +37,8 @@ route.get('/board/:boardName', async (req, res, next) => {
 	});
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
-route.post('/board/:boardName', upload.single("file"), thumbnail, async (req, res, next) => {
+let boardMap = {}
+route.post('/board/:boardName', ratelimit(300000, boardMap), upload.single("file"), thumbnail, async (req, res, next) => {
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0]?.id
 	if (!boardId) {
 		return res.end("Teri maa ki chut")
@@ -87,7 +89,8 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 	});
 })
 
-route.post('/board/:boardName/thread/:threadName', upload.single("file"), thumbnail, async (req, res, next) => {
+let threadMap = {}
+route.post('/board/:boardName/thread/:threadName', ratelimit(5000, threadMap), upload.single("file"), thumbnail, async (req, res, next) => {
 
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]

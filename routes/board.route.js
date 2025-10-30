@@ -154,9 +154,9 @@ route.get('/goto/:imageId', async (req, res, next) => {
 
 })
 
-route.get('/favicon.ico', async(req,res,next) => {
-	return res.sendFile(path.join(__dirname, '..', 'public', 'favicon.ico'))
-})
+// route.get('/favicon.ico', async(req,res,next) => {
+// 	return res.sendFile(path.join(__dirname, '..', 'public', 'favicon.ico'))
+// })
 
 
 //-------DELETE-------

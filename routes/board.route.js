@@ -38,7 +38,7 @@ route.get('/board/:boardName', async (req, res, next) => {
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
 let boardMap = {}
-route.post('/board/:boardName', ratelimit(300000, boardMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName', ratelimit(150000, boardMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0]?.id
 	if (!boardId) {
 		return res.end("Teri maa ki chut")
@@ -90,7 +90,7 @@ route.get('/board/:boardName/thread/:threadName', async (req, res, next) => {
 })
 
 let threadMap = {}
-route.post('/board/:boardName/thread/:threadName', ratelimit(15000, threadMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName/thread/:threadName', ratelimit(7000, threadMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
 
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
@@ -152,6 +152,10 @@ route.get('/goto/:imageId', async (req, res, next) => {
 		res.end("404")
 	}
 
+})
+
+route.get('/favicon.ico', async(req,res,next) => {
+	return res.sendFile(path.join(__dirname, '..', 'public', 'favicon.ico'))
 })
 
 

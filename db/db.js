@@ -58,7 +58,7 @@ class DB {
 			getBoards: this.db.prepare('select id, name, description from boards where disabled = 0'),
 
 			insertThread: this.db.prepare('insert into posts (board_id, parent_id, username, title, content, file_id, created_at, updated_at) values (?,?,?,?,?,?,?,?)'),
-			getThreads: this.db.prepare('select t.id, t.title, t.content, t.username, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.board_id = ? and t.parent_id is null group by t.id order by t.updated_at desc limit 50;'),
+			getThreads: this.db.prepare('select t.id, t.title, t.content, t.username, t.created_at, f.path as image_path, f.mime_type as mimetype, count(p.id) as reply_count from posts t left join files f on t.file_id = f.id left join posts p on p.parent_id = t.id where t.board_id = ? and t.parent_id is null group by t.id order by t.updated_at desc limit 100;'),
 			updateThread : this.db.prepare('update posts set updated_at = ? where id = ?'),
 
 			insertFile : this.db.prepare('insert into files (path, thumbnail_path, mime_type, created_at) values (?,?,?,?)'),

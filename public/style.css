@@ -60,6 +60,7 @@ button,input, textarea{
 	border: 1px solid black;
 	border-radius: 4px;
 	width: fit-content;
+	max-width: 100%;
 	padding: 12px;
 	
 

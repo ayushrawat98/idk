@@ -38,7 +38,7 @@ route.get('/board/:boardName', async (req, res, next) => {
 })
 // nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
 let boardMap = {}
-route.post('/board/:boardName', ratelimit(150000, boardMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName', ratelimit(200000, boardMap), nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}), upload.single("file"), thumbnail, async (req, res, next) => {
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0]?.id
 	if (!boardId) {
 		return res.end("Teri maa ki chut")
@@ -203,7 +203,7 @@ route.get('/cleanup/:threadId', async (req, res, next) => {
 })
 
 route.get('/cleanup', async (req, res, next) => {
-	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 100').all()
+	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 30').all()
 	// console.log(instance.db.prepare('select * from files').all())
 	for (let thread of allThreadsToDelete) {
 		deleteThreadAndFile(thread.id)

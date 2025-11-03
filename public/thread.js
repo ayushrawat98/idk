@@ -136,7 +136,7 @@ pasteTextBox.addEventListener('paste', (event) => {
 
 let username = sessionStorage.getItem('username')
 if(username == null){
-	sessionStorage.setItem('username', 'HijdaKutta-' + Math.trunc(Math.random()*100000))
+	sessionStorage.setItem('username', 'Anonymous-' + Math.trunc(Math.random()*100000))
 	username = sessionStorage.getItem('username')
 }
 document.getElementById('name').value = username

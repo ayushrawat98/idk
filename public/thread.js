@@ -134,9 +134,9 @@ pasteTextBox.addEventListener('paste', (event) => {
 	}
 });
 
-let username = sessionStorage.getItem('username')
-if(username == null){
-	sessionStorage.setItem('username', 'Anonymous-' + Math.trunc(Math.random()*100000))
-	username = sessionStorage.getItem('username')
-}
-document.getElementById('name').value = username
+// let username = sessionStorage.getItem('username')
+// if(username == null){
+// 	sessionStorage.setItem('username', 'Anonymous-' + Math.trunc(Math.random()*100000))
+// 	username = sessionStorage.getItem('username')
+// }
+// document.getElementById('name').value = username

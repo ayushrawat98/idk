@@ -59,8 +59,10 @@ button,input, textarea{
 .post {
 	border: 1px solid black;
 	border-radius: 4px;
-	width: fit-content;
-	max-width: 100%;
+	/* width: fit-content; */
+	/* max-width: 100%; */
+	width: 80%;
+	margin: auto;
 	padding: 12px;
 	
 

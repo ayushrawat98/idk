@@ -17,7 +17,7 @@ const route = express.Router()
 route.get('/', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const recentImages = instance.getRecentImages()
-	const randomFile = instance.getRandomFile()
+	// const randomFile = instance.getRandomFile()
 	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true, randomFile: randomFile });
 })
 

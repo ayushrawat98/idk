@@ -18,7 +18,7 @@ route.get('/', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const recentImages = instance.getRecentImages()
 	// const randomFile = instance.getRandomFile()
-	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true, randomFile: randomFile });
+	return res.render('index.html', { boards: boardsList, title: 'IndiaChan', images: recentImages, index: true });
 })
 
 

@@ -33,7 +33,7 @@
 				<img class="thumbnail" src="/public/files/{{data.image_path}}" alt="{{data.image_path}}" height="100" width="100" loading="lazy"/>
 			{% endif %}
 		{% endif %}
-			<p>{{data.content | greenText | safe}}{% for reply in data.latest_replies %}<br><span style="border: 1px solid black; padding: 4px 4px; margin-top: 8px; display: inline-block; white-space: pre-line; word-break: break-all; border-radius: 4px;">{{reply.content | truncate}}</span>{% endfor %}</p>
+		<p>{{data.content | greenText | safe}}{% for reply in data.latest_replies %}<br><span style="border: 1px solid gray; padding: 4px 4px; margin-top: 8px; display: inline-block; white-space: pre-line; word-break: break-all; border-radius: 4px;">{{reply.content | truncate}}</span>{% endfor %}</p>
 		<footer class="postFooter">
 			{% if board %}
 				<span>{{data.reply_count}} replies</span>

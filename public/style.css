@@ -13,7 +13,7 @@ html,body{
 
 main {
 	padding: 12px;
-	background-color: whitesmoke;
+	background-color: black;
 }
 
 .navLinks {
@@ -57,7 +57,7 @@ button,input, textarea{
 }
 
 .post {
-	border: 1px solid black;
+	border: 1px solid gray;
 	border-radius: 4px;
 	/* width: fit-content; */
 	/* max-width: 100%; */
@@ -107,7 +107,7 @@ button,input, textarea{
 .newPostWindow {
 	background-color: whitesmoke;
 	padding: 0px 12px 12px;
-	border: 1px solid black;
+	border: 1px solid gray;
 	z-index: 2;
 	position: fixed;
 	top: 10%;
@@ -123,7 +123,7 @@ button,input, textarea{
 	position: static;
 	background-color: whitesmoke;
 	padding: 0px 12px 12px;
-	border: 1px solid black;
+	border: 1px solid gray;
 	#dragHeaderStatic{
 		height: 20px;
 		background-color: rgb(186, 184, 184);

@@ -27,8 +27,9 @@ route.get('/', async (req, res, next) => {
 route.get('/board/:boardName', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
-	const threadsList = instance.getThreads(currentBoard.id)
-	// console.log(threadsList)
+	let threadsList = instance.getThreads(currentBoard.id)
+	threadsList.forEach(t => t['latest_replies'] = JSON.parse(t['latest_replies']))
+	console.log(threadsList)
 
 	return res.render('board.html', {
 		board: currentBoard,
@@ -64,7 +65,7 @@ route.post('/board/:boardName', ratelimit(250000, boardMap), nodeIpgeoblock({geo
 		board_id: boardId,
 		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0, 255),
 		title: req.body.title.trim().slice(0, 255),
-		content: sanitizedText,
+		content: sanitizedText.slice(0,4000),
 		op_file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()
@@ -125,7 +126,7 @@ route.post('/board/:boardName/thread/:threadName', ratelimit(7000, threadMap), n
 		board_id: currentBoard.id,
 		parent_id: req.params.threadName,
 		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0,255),
-		content: sanitizedText,
+		content: sanitizedText.slice(0,4000),
 		file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()

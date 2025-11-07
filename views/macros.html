@@ -47,6 +47,12 @@
 				<button class="replyButton" data-post-number="{{data.id}}">Reply</button>
 			{% endif %}
 		</footer>
+
+		<section>
+			{% for reply in data.latest_replies %}
+				<div style="white-space: pre-line;border: 1px solid black;margin : 8px 0px 0px 8px; padding: 8px 4px;">{{reply.content}}</div>
+			{% endfor %}
+		</section>
 	</article>
 
 {% endmacro %}

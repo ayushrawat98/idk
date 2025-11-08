@@ -63,7 +63,8 @@ class DB {
 			updateThread : this.db.prepare('update posts set updated_at = ? where id = ?'),
 
 			insertFile : this.db.prepare('insert into files (path, thumbnail_path, mime_type, created_at) values (?,?,?,?)'),
-			recentImages : this.db.prepare("select id, path from files WHERE mime_type LIKE 'image/%' order by created_at desc limit 6"),
+			// recentImages : this.db.prepare("select id, path from files WHERE mime_type LIKE 'image/%' order by created_at desc limit 6"),
+			recentImages : this.db.prepare("select id, path, mime_type from files order by created_at desc limit 6"),
 			getFile : this.db.prepare('select * from files where id = ?'),
 			
 			getThreadForPost: this.db.prepare('select t.id, t.title, t.content, t.username, t.file_id, t.created_at, f.path as image_path, f.mime_type as mimetype from posts t left join files f on t.file_id = f.id where t.id = ?'),

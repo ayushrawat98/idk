@@ -32,6 +32,25 @@ route.get('/board/:boardName', async (req, res, next) => {
 	// threadsList.forEach(t => t['latest_replies'].reverse())
 	// console.log(threadsList)
 
+	const now = Date.now();
+	// weights you can tune:
+	const decayFactor = 1.1;   // how fast older threads decay in score
+	const replyWeight = 0.15;  // how much each reply counts
+
+	threadsList.sort((a, b) => {
+		const ageA = (now - new Date(a.created_at).getTime()) / 3600000; // seconds old
+		const ageB = (now - new Date(b.created_at).getTime()) / 3600000;
+
+		// scoring function — newer is better, more replies = bonus
+		const scoreA = (1/ageA) + (a.reply_count*0.05);
+		const scoreB = (1/ageB) + (b.reply_count*0.05) ;
+		// console.log(scoreA, scoreB)
+
+		// higher score first
+		return scoreB - scoreA;
+	});
+
+
 	return res.render('board.html', {
 		board: currentBoard,
 		boards: boardsList,
@@ -136,7 +155,7 @@ route.post('/board/:boardName/thread/:threadName', ratelimit(7000, threadMap), u
 	}
 	instance.insertPost(obj)
 	if (!req.body.sage) {
-		// instance.updateThread(new Date().toISOString(), req.params.threadName)
+		instance.updateThread(new Date().toISOString(), req.params.threadName)
 	}
 	return res.redirect('/board/' + req.params.boardName + '/thread/' + req.params.threadName)
 })
@@ -200,7 +219,7 @@ function deleteThreadAndFile(threadId) {
 	// console.log(threadId , "deleted")
 }
 
-function cleanupMain(){
+function cleanupMain() {
 	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 30').all()
 	// console.log(instance.db.prepare('select * from files').all())
 	for (let thread of allThreadsToDelete) {

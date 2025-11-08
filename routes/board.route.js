@@ -32,23 +32,24 @@ route.get('/board/:boardName', async (req, res, next) => {
 	// threadsList.forEach(t => t['latest_replies'].reverse())
 	// console.log(threadsList)
 
-	const now = Date.now();
-	// weights you can tune:
-	const decayFactor = 1.1;   // how fast older threads decay in score
-	const replyWeight = 0.15;  // how much each reply counts
+	//wont work because we need notifications for new reply on bottom threads
+	// const now = Date.now();
+	// // weights you can tune:
+	// const decayFactor = 1.1;   // how fast older threads decay in score
+	// const replyWeight = 0.15;  // how much each reply counts
 
-	threadsList.sort((a, b) => {
-		const ageA = (now - new Date(a.created_at).getTime()) / 3600000; // seconds old
-		const ageB = (now - new Date(b.created_at).getTime()) / 3600000;
+	// threadsList.sort((a, b) => {
+	// 	const ageA = (now - new Date(a.created_at).getTime()) / 3600000; // seconds old
+	// 	const ageB = (now - new Date(b.created_at).getTime()) / 3600000;
 
-		// scoring function — newer is better, more replies = bonus
-		const scoreA = (1/ageA) + (a.reply_count*0.01);
-		const scoreB = (1/ageB) + (b.reply_count*0.01) ;
-		// console.log(scoreA, scoreB)
+	// 	// scoring function — newer is better, more replies = bonus
+	// 	const scoreA = (1/ageA) + (a.reply_count*0.01);
+	// 	const scoreB = (1/ageB) + (b.reply_count*0.01) ;
+	// 	// console.log(scoreA, scoreB)
 
-		// higher score first
-		return scoreB - scoreA;
-	});
+	// 	// higher score first
+	// 	return scoreB - scoreA;
+	// });
 
 
 	return res.render('board.html', {

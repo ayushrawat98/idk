@@ -28,9 +28,9 @@ route.get('/board/:boardName', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
 	let threadsList = instance.getThreads(currentBoard.id)
-	threadsList.forEach(t => t['latest_replies'] = JSON.parse(t['latest_replies']))
-	threadsList.forEach(t => t['latest_replies'].reverse())
-	console.log(threadsList)
+	// threadsList.forEach(t => t['latest_replies'] = JSON.parse(t['latest_replies']))
+	// threadsList.forEach(t => t['latest_replies'].reverse())
+	// console.log(threadsList)
 
 	return res.render('board.html', {
 		board: currentBoard,
@@ -38,9 +38,10 @@ route.get('/board/:boardName', async (req, res, next) => {
 		datalist: threadsList
 	});
 })
-// nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]}),
+
+// const blocker = nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]});
 let boardMap = {}
-route.post('/board/:boardName', ratelimit(250000, boardMap), upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName', ratelimit(100000, boardMap), upload.single("file"), thumbnail, async (req, res, next) => {
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0]?.id
 	if (!boardId) {
 		return res.end("Teri maa ki chut")
@@ -66,7 +67,7 @@ route.post('/board/:boardName', ratelimit(250000, boardMap), upload.single("file
 		board_id: boardId,
 		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0, 255),
 		title: req.body.title.trim().slice(0, 255),
-		content: sanitizedText.slice(0,4000),
+		content: sanitizedText.slice(0, 4000),
 		op_file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()
@@ -126,8 +127,8 @@ route.post('/board/:boardName/thread/:threadName', ratelimit(7000, threadMap), u
 	let obj = {
 		board_id: currentBoard.id,
 		parent_id: req.params.threadName,
-		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0,255),
-		content: sanitizedText.slice(0,4000),
+		username: req.body.name.trim() == '' ? 'Anonymous' : req.body.name.trim().slice(0, 255),
+		content: sanitizedText.slice(0, 4000),
 		file_id: newFile?.lastInsertRowid ?? null,
 		created_at: new Date().toISOString(),
 		updated_at: new Date().toISOString()
@@ -189,10 +190,12 @@ function deleteThreadAndFile(threadId) {
 	// console.log(path.join(__dirname, '..', 'public', 'files', tempfile.path))
 	if (tempfile && tempfile.path.trim().length > 0) {
 		fs.unlink(path.join(__dirname, '..', 'public', 'files', tempfile.path), () => { })
+		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path), () => { })
+		if (tempfile.mime_type.includes("video")) {
+			fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path + ".png"), () => { })
+		}
 	}
-	if (tempfile && tempfile.mime_type.includes("video")) {
-		fs.unlink(path.join(__dirname, '..', 'public', 'thumbnails', tempfile.path + ".png"), () => { })
-	}
+
 	// console.log(threadId , "deleted")
 }
 

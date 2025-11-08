@@ -48,6 +48,8 @@
 				<button class="replyButton" data-post-number="{{data.id}}">Reply</button>
 			{% endif %}
 		</footer>
+		<hr/>
+		<marquee>{% for reply in data.latest_replies %}{{reply.content}} | {% endfor %}</marquee>
 	</article>
 
 {% endmacro %}

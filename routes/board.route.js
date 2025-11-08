@@ -42,8 +42,8 @@ route.get('/board/:boardName', async (req, res, next) => {
 		const ageB = (now - new Date(b.created_at).getTime()) / 3600000;
 
 		// scoring function — newer is better, more replies = bonus
-		const scoreA = (1/ageA) + (a.reply_count*0.05);
-		const scoreB = (1/ageB) + (b.reply_count*0.05) ;
+		const scoreA = (1/ageA) + (a.reply_count*0.01);
+		const scoreB = (1/ageB) + (b.reply_count*0.01) ;
 		// console.log(scoreA, scoreB)
 
 		// higher score first

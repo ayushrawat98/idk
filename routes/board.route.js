@@ -41,7 +41,7 @@ route.get('/board/:boardName', async (req, res, next) => {
 
 // const blocker = nodeIpgeoblock({geolite2: "./public/GeoLite2-Country.mmdb",allowedCountries : ["IN"]});
 let boardMap = {}
-route.post('/board/:boardName', ratelimit(100000, boardMap), upload.single("file"), thumbnail, async (req, res, next) => {
+route.post('/board/:boardName', ratelimit(300000, boardMap), upload.single("file"), thumbnail, async (req, res, next) => {
 	const boardId = instance.getBoards().filter(board => board.name == req.params.boardName)[0]?.id
 	if (!boardId) {
 		return res.end("Teri maa ki chut")
@@ -73,6 +73,7 @@ route.post('/board/:boardName', ratelimit(100000, boardMap), upload.single("file
 		updated_at: new Date().toISOString()
 	}
 	const newThread = instance.insertThread(obj)
+	cleanupMain()
 	return res.redirect('/board/' + req.params.boardName)
 })
 
@@ -135,7 +136,7 @@ route.post('/board/:boardName/thread/:threadName', ratelimit(7000, threadMap), u
 	}
 	instance.insertPost(obj)
 	if (!req.body.sage) {
-		instance.updateThread(new Date().toISOString(), req.params.threadName)
+		// instance.updateThread(new Date().toISOString(), req.params.threadName)
 	}
 	return res.redirect('/board/' + req.params.boardName + '/thread/' + req.params.threadName)
 })
@@ -199,6 +200,14 @@ function deleteThreadAndFile(threadId) {
 	// console.log(threadId , "deleted")
 }
 
+function cleanupMain(){
+	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 30').all()
+	// console.log(instance.db.prepare('select * from files').all())
+	for (let thread of allThreadsToDelete) {
+		deleteThreadAndFile(thread.id)
+	}
+}
+
 route.get('/cleanup/:threadId', async (req, res, next) => {
 	if (req.query.key != '1') {
 		return res.end()
@@ -208,11 +217,7 @@ route.get('/cleanup/:threadId', async (req, res, next) => {
 })
 
 route.get('/cleanup', async (req, res, next) => {
-	const allThreadsToDelete = instance.db.prepare('select id from posts where parent_id is null and board_id = 1 order by updated_at desc limit -1 offset 30').all()
-	// console.log(instance.db.prepare('select * from files').all())
-	for (let thread of allThreadsToDelete) {
-		deleteThreadAndFile(thread.id)
-	}
+	cleanupMain()
 	res.send("done")
 })
 

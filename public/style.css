@@ -62,7 +62,7 @@ button,input, textarea{
 	/* max-width: 100%; */
 	width: 70%;
 	margin: auto;
-	padding: 12px 12px 0px;
+	padding: 12px;
 	
 
 	header{
@@ -97,6 +97,10 @@ button,input, textarea{
 			margin-right: 4px;
 			margin-bottom: 2px;
 		}
+	}
+
+	marquee{
+		margin-bottom:-12px;
 	}
 }
 

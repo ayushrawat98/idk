@@ -48,7 +48,7 @@
 				<button class="replyButton" data-post-number="{{data.id}}">Reply</button>
 			{% endif %}
 		</footer>
-		{% if data.latest_replies %}<hr/><marquee>{% for reply in data.latest_replies %}{{reply.content}} | {% endfor %}</marquee>{% endif %}
+		{% if data.latest_replies %}<hr/><marquee>{% for reply in data.latest_replies %}{{reply.content}}&nbsp;{% endfor %}</marquee>{% endif %}
 	</article>
 
 {% endmacro %}

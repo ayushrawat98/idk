@@ -62,7 +62,7 @@ button,input, textarea{
 	/* max-width: 100%; */
 	width: 70%;
 	margin: auto;
-	padding: 12px;
+	padding: 12px 12px 0px;
 	
 
 	header{

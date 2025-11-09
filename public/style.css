@@ -101,6 +101,7 @@ button,input, textarea{
 
 	marquee{
 		margin-bottom:-12px;
+		color: rgb(78, 77, 77);
 	}
 }
 

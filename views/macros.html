@@ -49,7 +49,7 @@
 			{% endif %}
 		</footer>
 		<hr/>
-		<marquee>{% for reply in data.latest_replies %}{{reply.content}} | {% endfor %}</marquee>
+		{% if data.latest_replies %}<marquee>{% for reply in data.latest_replies %}{{reply.content}} | {% endfor %}</marquee>{% endif %}
 	</article>
 
 {% endmacro %}

@@ -1,52 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<title>
-			{% block title %}
-			IndiaChan.Gay
-			{% endblock %}
-		</title>
-		<base href="">
-		<meta charset="UTF-8">
-		<meta name="description" content="IndiaChan - Fast, anonymous, ephemeral, minimally censored, and meme-friendly.">
-		<meta name="keywords" content="IndiaChan, BharatChan, chan, india, indian, bharat">
-		<link rel="icon" type="image/x-icon" href="/public/favicon.ico">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="google-site-verification" content="hGBcVhPEzMQXyQPOJjUZALMKvZMF9a7fjPEs9eQt6XA" />
-		<link rel="stylesheet" href="/public/style.css">
-	</head>
+<head>
+	<title>
+		{% block title %}
+		IndiaChan.Gay
+		{% endblock %}
+	</title>
+	<base href="">
+	<meta charset="UTF-8">
+	<meta name="title" content="IndiaChan - Fast, Anonymous, Ephemeral Indian Imageboard">
+	<meta name="description" content="IndiaChan is India's fast, anonymous, ephemeral, meme-friendly imageboard with minimal censorship. Post freely, browse boards, and enjoy community-driven content.">
+	<meta name="keywords" content="IndiaChan, Indian imageboard, BharatChan, chan, india memes, indian forum, anonymous posts, desi memes">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" type="image/x-icon" href="/public/favicon.ico">
+	<link rel="stylesheet" href="/public/style.css">
+	<meta property="og:title" content="IndiaChan - Indian Anonymous Imageboard">
+	<meta property="og:description" content="India's fast and anonymous pro-india imageboard. Minimal rules, memes and discussions.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://indiachan.gay/">
+	<meta property="og:image" content="https://indiachan.gay/public/favicon.ico">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="IndiaChan - Anonymous Indian Imageboard">
+	<meta name="twitter:description" content="Fast, anonymous, ephemeral and meme-friendly. Join pro-india IndiaChan.">
+	<meta name="twitter:image" content="https://indiachan.gay/public/favicon.ico">
+	<link rel="canonical" href="https://indiachan.gay/">
+	<meta name="robots" content="index, follow">
+</head>
+</head>
 
-	<body>
-		<main>
+<body>
+	<main>
 
-			{% if not index %}
-			<nav class="navLinks ">
-				<ul class="textCenter">
-					<li><a href="/">main</a></li>
-					{% for board in boards %}
-					<li><a href="/board/{{board.name}}">/{{board.name}}/</a></li>
-					{% else %}
-					<p>No boards available :&lt;</p>
-					{% endfor %}
-				</ul>
-			</nav>
-			{% endif %}
+		{% if not index %}
+		<nav class="navLinks ">
+			<ul class="textCenter">
+				<li><a href="/">main</a></li>
+				{% for board in boards %}
+				<li><a href="/board/{{board.name}}">/{{board.name}}/</a></li>
+				{% else %}
+				<p>No boards available :&lt;</p>
+				{% endfor %}
+			</ul>
+		</nav>
+		{% endif %}
 
-			{% block main %}
-				Content goes here.
-			{% endblock %}
-
-			
-
-		</main>
-
-		{% block script %}
-			
+		{% block main %}
+		Content goes here.
 		{% endblock %}
 
-		<!-- <marquee style="position: fixed; bottom: 0; background-color: white;">Attention please : Thank you for your attention.</marquee> -->
-		
-	</body>
+
+
+	</main>
+
+	{% block script %}
+
+	{% endblock %}
+
+	<!-- <marquee style="position: fixed; bottom: 0; background-color: white;">Attention please : Thank you for your attention.</marquee> -->
+
+</body>
 
 </html>

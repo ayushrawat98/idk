@@ -28,15 +28,15 @@ route.get('/board/:boardName', async (req, res, next) => {
 	const boardsList = instance.getBoards()
 	const currentBoard = boardsList.filter(board => board.name == req.params.boardName)[0]
 	let threadsList = instance.getThreads(currentBoard.id)
-	threadsList.forEach(t => {
-		let temp = JSON.parse(t['latest_replies'])
-		if(temp.length == 0){
-			temp = null
-		}else{
-			temp.reverse()
-		}
-		t['latest_replies'] = temp
-	})
+	// threadsList.forEach(t => {
+	// 	let temp = JSON.parse(t['latest_replies'])
+	// 	if(temp.length == 0){
+	// 		temp = null
+	// 	}else{
+	// 		temp.reverse()
+	// 	}
+	// 	t['latest_replies'] = temp
+	// })
 	// threadsList.forEach(t => t['latest_replies'].reverse())
 	// console.log(threadsList)
 

@@ -84,6 +84,10 @@ route.post('/board/:boardName', ratelimit(16000, boardMap), upload.single("file"
 		return res.end("Teri maa ki chut")
 	}
 
+	if(!req.file){
+		return res.end()
+	}
+
 	let fileObj = {
 		path: req.file.filename,
 		thumbnail_path: req.file.filename,

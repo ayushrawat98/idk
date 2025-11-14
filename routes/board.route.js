@@ -169,7 +169,7 @@ route.post('/board/:boardName/thread/:threadName', ratelimit(8000, threadMap), u
 	instance.insertPost(obj)
 	// removed sage
 	// if (!req.body.sage) {
-		// instance.updateThread(new Date().toISOString(), req.params.threadName)
+		instance.updateThread(new Date().toISOString(), req.params.threadName)
 	// }
 	return res.redirect('/board/' + req.params.boardName + '/thread/' + req.params.threadName)
 })

@@ -1,0 +1,44 @@
+{% for data in datalist %}
+<article class="post" id="{{data.id}}">
+	<header>
+		<h3>{{data.title}}</h3>
+	</header>
+	{% if data.image_path %}
+	{% if "video" in data.mimetype %}
+	<img class="thumbnail" src="/public/thumbnails/{{data.image_path}}.png" alt="{{data.image_path}}" height="100"
+		width="100" loading="lazy" />
+	{% else %}
+	<img class="thumbnail" src="/public/thumbnails/{{data.image_path}}" alt="{{data.image_path}}" height="100"
+		width="100" loading="lazy" />
+	{% endif %}
+	{% endif %}
+	<p>{{data.content | greenText | safe}}</p>
+	<!-- {% for reply in data.latest_replies %}<br><span style="border: 1px solid black; padding: 4px 4px; margin-top: 8px; display: inline-block; white-space: pre-line; word-break: break-all; border-radius: 4px;">{{reply.content | truncate}}</span>{% endfor %} -->
+	<footer class="postFooter">
+		{% if board %}
+		<strong>{{data.reply_count}} replies</strong>
+		<a href="/board/{{board.name}}/thread/{{data.id}}">View</a>
+		<br>
+		{% endif %}
+		<span>~{{data.username}}</span>
+		<span>{{data.created_at | indianDate}}</span>
+		<span>#{{data.id}}</span>
+		{% if not board %}
+		<button class="replyButton" data-post-number="{{data.id}}">Reply</button>
+		{% endif %}
+	</footer>
+	<button type="button" class="deletebtn" data-post-number="{{data.id}}">delete</button>
+</article>
+{% endfor %}
+
+<script>
+
+	let btn = document.querySelectorAll('.deletebtn')
+	btn.forEach(delbtn => {
+		delbtn.addEventListener('click', () => {
+			let id = delbtn.getAttribute('data-post-number')
+			fetch('/cleanup/' + id + '?key=1').then(() => console.log('done'))
+			})
+	})
+
+</script>

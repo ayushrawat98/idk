@@ -175,6 +175,22 @@ route.post('/board/:boardName/thread/:threadName', ratelimit(8000, threadMap), b
 })
 
 
+//ADMIN
+route.get('/adminsaab', async (req, res, next) => {
+	const boardsList = instance.getBoards()
+	const currentBoard = boardsList.filter(board => board.name == 'bakchodi')[0]
+	let threadsList = instance.getThreads(currentBoard.id)
+	
+
+	return res.render('admin.html', {
+		board: currentBoard,
+		boards: boardsList,
+		datalist: threadsList
+	});
+})
+
+
+
 //-------index image click--------
 
 route.get('/goto/:imageId', async (req, res, next) => {
